@@ -1,8 +1,8 @@
 # 2D Tokamak transport simulation with deuterium, recycling, impurity radiation
 # We need to include ExB and diamagnetic drifts -> relax_potential or vorticity
 
-nout = 20          # Number of output steps
-timestep = 100      # Output timestep, normalised ion cyclotron times [1/Omega_ci]
+nout = 10                      # Number of output timesteps
+timestep = 95788 * 0.00125        # 95788 = 1ms in normalised units
 
 MZ = 1            # Number of points in Z (toroidal) direction
 # zperiod = 5    # Fraction of a torus to simulate (not used here)
@@ -63,6 +63,7 @@ x_index = x*(nx - 2 * MXG) - 0.5 + MXG
 type = shifted
 
 [solver]
+diagnose = true
 type = snes                      # Backward Euler steady-state solver
 snes_type = newtonls             # Nonlinear solver
 ksp_type = gmres                 # Linear solver: gmres, cg
@@ -81,8 +82,7 @@ kP = 0.65
 kI = 0.30
 kD = 0.15
 matrix_free_operator = true
-
-# timestep = 0.001                 # Initial timestep
+timestep = 0.001                 # Initial timestep
 
 [petsc]
 
@@ -93,6 +93,7 @@ pc_hypre_ilu_local_reordering = true              # reduces fill / improves robu
 pc_hypre_ilu_tri_solve = true                     # use triangular solve instead of smoothing
 pc_hypre_ilu_print_level = true
 snes_fd_color_use_mat = true
+
 
 [hermes]
 # With neutrals / No drifts

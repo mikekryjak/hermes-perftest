@@ -1,0 +1,449 @@
+IncIntShear = false		# type: bool, source: default
+MXG = 2		# type: int, doc: Number of guard cells on each side in X, source: default
+MYG = 2		# type: int, doc: Number of guard cells on each side in Y, source: default
+MZ = 1		# type: int, source: test3/BOUT.inp
+ZMAX = 1		# type: BoutReal, source: default
+ZMIN = 0		# type: BoutReal, source: default
+anomalous_Chi_e_core = 0.3		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_Chi_e_sol = 3.0		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_Chi_i_core = 0.3		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_Chi_i_sol = 3.0		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_D_e_core = 0.3		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_D_e_sol = 1.0		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_D_i_core = 0.3		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+anomalous_D_i_sol = 1.0		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+append = false		# type: bool, doc: Add new outputs to the end of existing files? If false, overwrite files., source: default
+async_send = false		# type: bool, doc: Whether to use asyncronous MPI sends, source: default
+core_ne = 0.6404e20 / hermes:Nnorm		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+core_pe = core_ne * core_te		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+core_pi = core_ne * core_ti		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+core_te = scale_T * 1618.097 / hermes:Tnorm		# source: test3/BOUT.inp
+core_ti = scale_T * 1881.145 / hermes:Tnorm		# source: test3/BOUT.inp
+datadir = test3		# type: string, source: Command line
+dump_on_restart = true		# type: bool, doc: Write initial state as time point 0?, source: default
+format = ""		# type: string, source: default
+grid = ""		# type: string, source: default
+initial_ne = 0.6404e20 / hermes:Nnorm		# source: test3/BOUT.inp
+initial_pe = initial_te * initial_ne		# source: test3/BOUT.inp
+initial_pi = initial_ti * initial_ne		# source: test3/BOUT.inp
+initial_te = core_te		# source: test3/BOUT.inp
+initial_ti = core_ti		# source: test3/BOUT.inp
+non_uniform = true		# type: bool, source: default
+nout = 10		# type: int, doc: Number of output steps, source: test3/BOUT.inp
+nz = 1		# type: int, source: default
+optionfile = BOUT.inp		# type: string, source: default
+periodicX = false		# type: bool, doc: Make grid periodic in X?, source: default
+restart = true		# type: bool, doc: Load state from restart files?, source: Command line
+scale_T = 0.1		# source: test3/BOUT.inp
+settingsfile = BOUT.settings		# type: string, source: default
+stopCheck = false		# type: bool, doc: Check if a file exists, and exit if it does., source: default
+stopCheckName = BOUT.stop		# type: string, doc: Name of file whose existence triggers a stop, source: default
+timestep = 95788 * 0.00125		# type: BoutReal, doc: Output time step size, source: test3/BOUT.inp
+twistshift = false		# type: bool, doc: Apply a Twist-Shift boundary using ShiftAngle?, source: default
+wall_limit = -1		# type: BoutReal, doc: Wall time limit in hours. By default (< 0), no limit, source: default
+
+[Dnnd]
+bndry_all = dirichlet		# type: string
+
+[NVd]
+bndry_all = neumann		# type: string, source: test3/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+
+[NVd+]
+bndry_all = neumann		# type: string, source: test3/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+
+[NVe]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[NVn]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[Nd]
+bndry_all = neumann		# type: string
+evolve_bndry = false		# type: bool, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Nd). Units [m^-3/s], source: default
+
+[Nd+]
+bndry_all = neumann		# type: string, source: test3/BOUT.inp
+bndry_core = dirichlet(core_ne)		# unused value (marked conditionally used), source: test3/BOUT.inp
+bndry_pf = decaylength(0.03 / hermes:rho_s0)		# type: string, source: test3/BOUT.inp
+bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: test3/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+function = initial_ne		# type: string, source: test3/BOUT.inp
+initialize_from_mesh = true		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Nd+). Units [m^-3/s], source: default
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Pd]
+bndry_all = neumann		# type: string
+bndry_core = neumann		# unused value (marked conditionally used), source: test3/BOUT.inp
+bndry_sol = neumann		# type: string, source: test3/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pd). Units [N/m^2/s], source: default
+
+[Pd+]
+bndry_all = neumann		# type: string, source: test3/BOUT.inp
+bndry_core = dirichlet(core_pi)		# unused value (marked conditionally used), source: test3/BOUT.inp
+bndry_pf = decaylength(0.03 / hermes:rho_s0)		# type: string, source: test3/BOUT.inp
+bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: test3/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+function = initial_pi		# type: string, source: test3/BOUT.inp
+initialize_from_mesh = true		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pd+). Units [Pa/s], note P = 2/3 E, source: default
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Pe]
+bndry_all = neumann		# type: string, source: test3/BOUT.inp
+bndry_core = dirichlet(core_pe)		# unused value (marked conditionally used), source: test3/BOUT.inp
+bndry_pfr = decaylength(0.03 / hermes:rho_s0)		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: test3/BOUT.inp
+evolve_bndry = false		# type: bool, source: default
+function = initial_pe		# type: string, source: test3/BOUT.inp
+initialize_from_mesh = true		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
+source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pe). Units [Pa/s], note P = 2/3 E, source: default
+source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
+source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
+
+[Td]
+bndry_all = neumann		# type: string
+
+[Vd]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[Vd+]
+bndry_all = neumann		# type: string, source: test3/BOUT.inp
+
+[Ve]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[Vn]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[all]
+bndry_all = dirichlet		# type: string, source: default
+evolve_bndry = false		# type: bool, source: default
+function = 0.0		# type: string, source: default
+scale = 1		# type: BoutReal, source: default
+
+[collisions]
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: test3/BOUT.inp
+ei_multiplier = 1.0		# type: BoutReal, doc: User-set arbitrary multiplier on electron-ion collision rate, source: test3/BOUT.inp
+electron_electron = true		# type: bool, doc: Include electron-electron collisions?, source: test3/BOUT.inp
+electron_ion = true		# type: bool, doc: Include electron-ion collisions?, source: test3/BOUT.inp
+electron_neutral = true		# type: bool, doc: Include electron-neutral elastic collisions?, source: test3/BOUT.inp
+frictional_heating = true		# type: bool, doc: Include R dot v heating term as energy source?, source: default
+ion_ion = true		# type: bool, doc: Include ion-ion elastic collisions?, source: test3/BOUT.inp
+ion_neutral = true		# type: bool, doc: Include ion-neutral elastic collisions?, source: test3/BOUT.inp
+neutral_neutral = true		# type: bool, doc: Include neutral-neutral elastic collisions?, source: test3/BOUT.inp
+
+[d]
+AA = 2		# type: BoutReal, doc: Particle atomic mass. Proton = 1, source: test3/BOUT.inp
+K_cx_multiplier = 1		# type: BoutReal, doc: Scale the charge exchange rate by this factor, source: default
+K_iz_multiplier = 1		# type: BoutReal, doc: Scale the ionisation rate by this factor, source: default
+K_rec_multiplier = 1		# type: BoutReal, doc: Scale the recombination rate by this factor, source: default
+R_ex_multiplier = 1		# type: BoutReal, doc: Scale the ionisation excitation/de-excitation radiation rate by this factor, source: default
+R_rec_multiplier = 1		# type: BoutReal, doc: Scale the recombination radiation (incl. 3 body) rate by this factor, source: default
+density_floor = 1e-5		# type: BoutReal, doc: A minimum density used when dividing NVn by Nn. Normalised units., source: test3/BOUT.inp
+diagnose = true		# type: bool, doc: Save additional diagnostics?, source: test3/BOUT.inp
+diffusion_collisions_mode = multispecies		# type: string, doc: Can be multispecies: all enabled collisions excl. IZ, or afn: CX, IZ and NN collisions, source: default
+diffusion_limit = -1		# type: BoutReal, doc: Upper limit on diffusion coefficient [m^2/s]. <0 means off, source: default
+evolve_momentum = true		# type: bool, doc: Evolve parallel neutral momentum?, source: default
+flux_limit = 0.2		# type: BoutReal, doc: Limit diffusive fluxes to fraction of thermal speed. <0 means off., source: default
+freeze_low_density = false		# type: bool, doc: Freeze evolution in low density regions?, source: default
+kappa_limit_alpha = 1		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+lax_flux = true		# type: bool, doc: Enable stabilising lax flux?, source: default
+neutral_boundary_lower_y = true		# type: bool, doc: Boundary on lower y?, source: test3/BOUT.inp
+neutral_boundary_pfr = true		# type: bool, doc: Boundary on PFR?, source: test3/BOUT.inp
+neutral_boundary_sol = true		# type: bool, doc: Boundary on SOL?, source: test3/BOUT.inp
+neutral_boundary_upper_y = true		# type: bool, doc: Boundary on upper y?, source: test3/BOUT.inp
+neutral_conduction = true		# type: bool, doc: Include neutral gas heat conduction?, source: default
+neutral_viscosity = true		# type: bool, doc: Include neutral gas viscosity?, source: default
+output_ddt = true		# type: bool, doc: Save derivatives to output?, source: test3/BOUT.inp
+pfr_energy_refl_factor = 0.67		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at PFR, source: test3/BOUT.inp
+pfr_fast_refl_fraction = 0.70		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the pfr, source: test3/BOUT.inp
+precondition = true		# type: bool, doc: Enable preconditioning in neutral model?, source: test3/BOUT.inp
+sheath_ydown = true		# type: bool, doc: Enable wall boundary conditions at ydown, source: default
+sheath_yup = true		# type: bool, doc: Enable wall boundary conditions at yup, source: default
+sol_energy_refl_factor = 0.67		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at SOL, source: test3/BOUT.inp
+sol_fast_refl_fraction = 0.70		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the sol, source: test3/BOUT.inp
+target_energy_refl_factor = 0.70		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at target, source: test3/BOUT.inp
+target_fast_refl_fraction = 0.80		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the target, source: test3/BOUT.inp
+temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
+type = neutral_mixed, neutral_boundary		# source: test3/BOUT.inp
+zero_timederivs = false		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[d:precon_laplace]
+all_terms = true		# type: bool, doc: Include first derivative terms?, source: default
+async = true		# type: bool, doc: Use asyncronous MPI send?, source: default
+dst = false		# type: bool, doc: Use Discrete Sine Transform in Z to enforce Dirichlet boundaries in Z, source: default
+extra_yguards_lower = 0		# type: int, doc: Exclude some number of points at the lower boundary, useful for staggered grids or when boundary conditions make inversion redundant, source: default
+extra_yguards_upper = 0		# type: int, doc: Exclude some number of points at the upper boundary, useful for staggered grids or when boundary conditions make inversion redundant, source: default
+filter = 0		# type: BoutReal, doc: Fraction of Z modes to filter out. Between 0 and 1, source: default
+global_flags = 0		# type: int, doc: Default flags, source: default
+include_yguards = false		# type: bool, doc: Solve Laplacian in Y guard cells?, source: default
+inner_boundary_flags = 0		# type: int, doc: Flags to set inner boundary condition, source: default
+low_mem = false		# type: bool, doc: If true, reduce the amount of memory used, source: default
+maxmode = 0		# type: int, doc: The maximum Z mode to solve for, source: default
+nonuniform = true		# type: bool, doc: Use non-uniform grid corrections? Default is the mesh setting., source: default
+outer_boundary_flags = 0		# type: int, doc: Flags to set outer boundary condition, source: default
+type = cyclic		# type: string, source: default
+
+[d+]
+AA = 2		# doc: Particle atomic mass. Proton = 1, source: test3/BOUT.inp
+anomalous_D = <Field2D>		# type: Field2D, doc: Anomalous particle diffusion coefficient [m^2/s], source: default
+anomalous_chi = <Field2D>		# type: Field2D, doc: Anomalous thermal diffusion coefficient [m^2/s], source: default
+anomalous_nu = 0.1		# type: Field2D, doc: Anomalous momentum diffusion coefficient [m^2/s], source: test3/BOUT.inp
+anomalous_sheath_flux = false		# type: bool, doc: Allow anomalous diffusion into sheath?, source: default
+bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
+charge = 1		# doc: Particle charge. electrons = -1, source: test3/BOUT.inp
+conduction_collisions_mode = multispecies		# type: string, doc: Can be multispecies: all collisions, or braginskii: self collisions and ie, source: default
+damp_p_nt = false		# type: bool, doc: Damp P - N*T? Active when P < 0 or N < density_floor, source: default
+density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
+diagnose = true		# type: bool, doc: Save additional diagnostics?, source: test3/BOUT.inp
+eta_limit_alpha = 0.5		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
+fix_momentum_boundary_flux = false		# type: bool, doc: Fix Y boundary momentum flux to boundary midpoint value?, source: default
+hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
+hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
+kappa_coefficient = 3.9		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
+kappa_limit_alpha = 1		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: test3/BOUT.inp
+low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
+low_n_diffuse = false		# type: bool, doc: Parallel diffusion at low density, source: default
+low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
+low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
+neutral_pump = true		# type: bool, doc: Neutral pump enabled? Note, need location in grid file, source: test3/BOUT.inp
+numerical_viscous_heating = false		# type: bool, doc: Include heating due to numerical viscosity?, source: default
+p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Grad(p) form, source: default
+pfr_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at pfr, source: default
+pfr_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at pfr, source: default
+pfr_recycle = true		# type: bool, doc: Recycling in the PFR edge?, source: test3/BOUT.inp
+pfr_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at pfr [eV], source: test3/BOUT.inp
+pfr_recycle_multiplier = 0.999		# type: BoutReal, doc: Multiply the pfr recycled flux by this factor. Should be >=0 and <= 1, source: test3/BOUT.inp
+poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
+precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: test3/BOUT.inp
+pump_recycle_multiplier = 0.999		# type: BoutReal, doc: Multiply the pump boundary recycling flux by this factor (like albedo). Should be >=0 and <= 1, source: test3/BOUT.inp
+recycle_as = d		# doc: Name of the species to recycle into, source: test3/BOUT.inp
+sol_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at sol, source: default
+sol_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at sol, source: default
+sol_recycle = true		# type: bool, doc: Recycling in the SOL edge?, source: test3/BOUT.inp
+sol_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at sol [eV], source: test3/BOUT.inp
+sol_recycle_multiplier = 0.999		# type: BoutReal, doc: Multiply the sol recycled flux by this factor. Should be >=0 and <= 1, source: test3/BOUT.inp
+target_fast_recycle_energy_factor = 0.48		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at target, source: test3/BOUT.inp
+target_fast_recycle_fraction = 0.80		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at target, source: test3/BOUT.inp
+target_recycle = true		# type: bool, doc: Recycling in the targets?, source: test3/BOUT.inp
+target_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at target [eV], source: test3/BOUT.inp
+target_recycle_multiplier = 0.999		# type: BoutReal, doc: Multiply the target recycled flux by this factor. Should be >=0 and <= 1, source: test3/BOUT.inp
+temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: test3/BOUT.inp
+type = evolve_density, evolve_momentum, evolve_pressure, anomalous_diffusion		# source: test3/BOUT.inp
+
+[e]
+AA = 1/1836		# doc: Particle atomic mass. Proton = 1, source: test3/BOUT.inp
+anomalous_D = <Field2D>		# type: Field2D, doc: Anomalous particle diffusion coefficient [m^2/s], source: default
+anomalous_chi = <Field2D>		# type: Field2D, doc: Anomalous thermal diffusion coefficient [m^2/s], source: default
+anomalous_nu = 0.1		# type: Field2D, doc: Anomalous momentum diffusion coefficient [m^2/s], source: test3/BOUT.inp
+anomalous_sheath_flux = false		# type: bool, doc: Allow anomalous diffusion into sheath?, source: default
+bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
+charge = -1		# doc: Particle charge. electrons = -1, source: test3/BOUT.inp
+conduction_collisions_mode = multispecies		# type: string, doc: Can be multispecies: all collisions, or braginskii: self collisions and ie, source: default
+damp_p_nt = false		# type: bool, doc: Damp P - N*T? Active when P < 0 or N < density_floor, source: default
+density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: test3/BOUT.inp
+evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
+hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
+hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
+kappa_coefficient = 2.23446		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
+kappa_limit_alpha = 0.3		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: test3/BOUT.inp
+low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
+low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
+low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
+numerical_viscous_heating = false		# type: bool, doc: Include heating due to numerical viscosity?, source: default
+p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Grad(p) form, source: default
+poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
+precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: test3/BOUT.inp
+temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: test3/BOUT.inp
+type = quasineutral, evolve_pressure, anomalous_diffusion, zero_current		# source: test3/BOUT.inp
+
+[electromagnetic:laplacian]
+atol_accept = 1e-06		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+maxits = 1000		# unused value (NOT marked conditionally used), type: int, source: user_default
+rtol_accept = 0.01		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+type = naulin		# unused value (NOT marked conditionally used), type: string, source: user_default
+
+[electron_force_balance]
+diagnose = false		# type: bool, doc: Save additional output diagnostics, source: default
+
+[hermes]
+Bnorm = 1		# type: BoutReal, doc: Reference magnetic field [T], source: test3/BOUT.inp
+Cs0 = sqrt(qe * hermes:Tnorm / Mp)		# source: test3/BOUT.inp
+Mp = 1.67262e-27		# source: test3/BOUT.inp
+Nnorm = 1e20		# type: BoutReal, doc: Reference density [m^-3], source: test3/BOUT.inp
+Omega_ci = qe * hermes:Bnorm / Mp		# source: test3/BOUT.inp
+Tnorm = scale_T * 100		# type: BoutReal, doc: Reference temperature [eV], source: test3/BOUT.inp
+components = (d+, d, e,collisions, sheath_boundary_simple, recycling,sound_speed,reactions,electron_force_balance)		# doc: Components in order of execution, source: test3/BOUT.inp
+normalise_metric = true		# type: bool, doc: Normalise input metric tensor? (assumes input is in SI units), source: default
+qe = 1.60218e-19		# source: test3/BOUT.inp
+recalculate_metric = false		# type: bool, doc: Load Rxy, Bpxy etc. to calculate an orthogonal metric?, source: default
+restarting = true		# unused value (marked conditionally used)
+revision = 017f21c8d461e982741440091ac920142590f807		# unused value (marked conditionally used)
+rho_s0 = Cs0 / Omega_ci		# source: test3/BOUT.inp
+slope_limiter = MC		# unused value (marked conditionally used)
+
+[input]
+error_on_unused_options = false		# type: bool, doc: Error if there are any unused options before starting the main simulation, source: test3/BOUT.inp
+max_recursion_depth = 0		# type: string, doc: Maximum recursion depth allowed in expressions. 0 = no recursion; -1 = unlimited, source: default
+transform_from_field_aligned = true		# type: string, source: default
+validate = false		# type: bool, doc: Check for unused options and stop, source: default
+
+[mesh]
+MXG = 2		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+calcParallelSlices_on_communicate = false		# type: bool, doc: Calculate parallel slices on all communicated fields, source: user_default
+extrapolate_x = false		# type: bool, source: default
+extrapolate_y = false		# type: bool, source: test3/BOUT.inp
+file = grid_test3.nc		# type: string, source: test3/BOUT.inp
+format = ""		# type: string, source: default
+include_corner_cells = true		# type: bool, doc: Communicate corner guard and boundary cells. Can be set to false if you are sure that you will not need these cells, for mixed derivatives D2DXDY (or anything else), for example if your grid has orthogonal x- and y-directions. This might slightly reduce communication time., source: default
+maxregionblocksize = 64		# type: int, doc: (Advanced) Sets the maximum size of continguous blocks when creating Regions, source: default
+nx = 44		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+staggergrids = false		# type: bool, doc: Enable staggered grids. By default, all variables are cell centred, source: default
+symmetricGlobalX = true		# type: bool, source: default
+symmetricGlobalY = true		# type: bool, source: default
+type = bout		# type: string, source: default
+x_index = x*(nx - 2 * MXG) - 0.5 + MXG		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+xsep_inner = 30		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+
+[mesh:ddz]
+fft_filter = 0		# type: BoutReal, source: default
+
+[mesh:paralleltransform]
+type = shifted		# type: string, source: test3/BOUT.inp
+
+[output]
+append = false		# type: bool, doc: Append to existing file?, source: user_default
+enabled = true		# type: bool, doc: Write output files, source: default
+path = test3		# type: string, source: user_default
+prefix = BOUT.dmp		# type: string, source: user_default
+type = netcdf		# type: string, source: default
+
+[petsc]
+pc_hypre_ilu_level = 1		# source: test3/BOUT.inp
+pc_hypre_ilu_local_reordering = true		# source: test3/BOUT.inp
+pc_hypre_ilu_print_level = true		# source: test3/BOUT.inp
+pc_hypre_ilu_tri_solve = true		# source: test3/BOUT.inp
+snes_fd_color_use_mat = true		# source: test3/BOUT.inp
+
+[reactions]
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: test3/BOUT.inp
+no_neutral_cx_mom_gain = false		# type: bool, doc: If true, ion momentum in CX is still lost but not given to the neutrals, source: default
+type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,)		# source: test3/BOUT.inp
+
+[recycling]
+density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
+species = d+		# doc: Comma-separated list of species to recycle, source: test3/BOUT.inp
+
+[restart_files]
+append = false		# type: bool, doc: Append to existing file?, source: user_default
+enabled = true		# type: bool, doc: Write restart files, source: default
+path = test3		# type: string, source: user_default
+prefix = BOUT.restart		# type: string, source: user_default
+singleWriteFile = true		# unused value (NOT marked conditionally used), type: bool, source: user_default
+type = netcdf		# type: string, source: default
+
+[run]
+finished = Thu Aug 14 17:16:03 2025
+		# unused value (NOT marked conditionally used), source: Output
+revision = ab0c53a3a040e84ed1ab90075010a8b481fe4b6e		# unused value (NOT marked conditionally used), source: Output
+run_id = 30d2c0a1-491e-4156-b749-4dc4d55674ef		# unused value (NOT marked conditionally used), source: Output
+run_restart_from = f2a21ffa-21c3-4640-bd55-beb957ea0d28		# unused value (NOT marked conditionally used), source: Output
+started = Thu Aug 14 17:12:52 2025
+		# unused value (NOT marked conditionally used), source: Output
+version = 5.2.0		# unused value (NOT marked conditionally used), source: Output
+
+[sheath_boundary_simple]
+always_set_phi = false		# type: bool, doc: Always set phi field? Default is to only modify if already set, source: default
+density_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
+diagnose = false		# type: bool, doc: Save additional output diagnostics, source: default
+gamma_e = 4.8		# type: BoutReal, doc: Electron sheath heat transmission coefficient, source: test3/BOUT.inp
+gamma_i = 3.5		# type: BoutReal, doc: Ion sheath heat transmission coefficient, source: test3/BOUT.inp
+lower_y = true		# type: bool, doc: Boundary on lower y?, source: default
+no_flow = false		# type: bool, doc: Set zero particle flow, keeping energy flow, source: default
+pressure_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
+secondary_electron_coef = 0		# type: BoutReal, doc: Effective secondary electron emission coefficient, source: default
+sheath_ion_polytropic = 1		# type: BoutReal, doc: Ion polytropic coefficient in Bohm sound speed, source: default
+sin_alpha = 1		# type: BoutReal, doc: Sin of the angle between magnetic field line and wall surface. Should be between 0 and 1, source: default
+temperature_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
+upper_y = true		# type: bool, doc: Boundary on upper y?, source: default
+wall_potential = <Field3D>		# type: Field3D, doc: Voltage of the wall [Volts], source: default
+
+[solver]
+atol = 1e-12		# type: BoutReal, doc: Absolute tolerance in SNES solve, source: test3/BOUT.inp
+diagnose = true		# type: bool, doc: Print additional diagnostics, source: test3/BOUT.inp
+diagnose_failures = false		# type: bool, doc: Print more diagnostics when SNES fails, source: default
+dt_min_reset = 1e-06		# type: BoutReal, doc: If dt falls below this, reset to starting dt, source: default
+equation_form = rearranged_backward_euler		# type: 20BoutSnesEquationForm, doc: Form of equation to solve: rearranged_backward_euler (default); pseudo_transient; backward_euler; direct_newton, source: default
+force_symmetric_coloring = false		# type: bool, doc: Modifies coloring matrix to force it to be symmetric, source: default
+is_nonsplit_model_diffusive = true		# type: bool, doc: If not a split operator, treat RHS as diffusive?, source: default
+kD = 0.15		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+kI = 0.30		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+kP = 0.65		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+ksp_type = gmres		# type: string, doc: Linear solver type. By default let PETSc decide (gmres), source: test3/BOUT.inp
+kspsetinitialguessnonzero = false		# type: bool, doc: Set the initial guess to be non-zero, source: default
+lag_jacobian = 7		# type: int, doc: Re-use the Jacobian this number of SNES iterations, source: test3/BOUT.inp
+line_search_type = default		# type: string, doc: Line search type: basic, bt, l2, cp, nleqerr, source: default
+lower_its = 8		# type: int, doc: Iterations below which the next timestep is increased, source: default
+matrix_free = false		# type: bool, doc: Use matrix free Jacobian?, source: default
+matrix_free_operator = true		# type: bool, doc: Use matrix free Jacobian-vector operator?, source: test3/BOUT.inp
+max_nonlinear_iterations = 16		# type: int, doc: Maximum number of nonlinear iterations per SNES solve, source: test3/BOUT.inp
+max_timestep = 1e+37		# type: BoutReal, doc: Maximum timestep, source: default
+maxf = 20000		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+maxl = 260		# type: int, doc: Maximum number of linear iterations, source: test3/BOUT.inp
+mms = false		# type: bool, doc: Use Method of Manufactured Solutions to track error scaling, source: default
+mms_initialise = false		# type: bool, doc: Use MMS solution for field initial conditions, source: default
+monitor_timestep = false		# type: bool, doc: Call monitors on internal timesteps, source: default
+nout = 10		# type: int, doc: Number of output steps. Overrides global setting., source: default
+output_step = 119.735		# type: BoutReal, doc: Output time step size. Overrides global 'timestep' setting., source: default
+pc_hypre_type = ilu		# type: string, doc: hypre preconditioner type: euclid, pilut, parasails, boomeramg, ams, ads, source: test3/BOUT.inp
+pc_type = hypre		# type: string, doc: Preconditioner type. By default lets PETSc decide (ilu or bjacobi), source: test3/BOUT.inp
+pidController = true		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+predictor = true		# type: bool, doc: Use linear predictor?, source: default
+prune_abstol = 1e-16		# type: BoutReal, doc: Prune values with absolute values smaller than this, source: default
+prune_fraction = 0.2		# type: BoutReal, doc: Prune if fraction of small elements is larger than this, source: default
+prune_jacobian = false		# type: bool, doc: Remove small elements in the Jacobian?, source: default
+rtol = 1e-6		# type: BoutReal, doc: Relative tolerance in SNES solve, source: test3/BOUT.inp
+save_repeat_run_id = false		# type: bool, doc: Write run_id and run_restart_from at every output timestep, to make it easier to concatenate output data sets in time, source: default
+scale_rhs = false		# type: bool, doc: Scale time derivatives (Jacobian row scaling)?, source: default
+scale_vars = false		# type: bool, doc: Scale variables (Jacobian column scaling)?, source: default
+snes_type = newtonls		# type: string, doc: PETSc nonlinear solver method to use, source: test3/BOUT.inp
+stol = 1e-12		# type: BoutReal, doc: Convergence tolerance in terms of the norm of the change in the solution between steps, source: test3/BOUT.inp
+target_its = 5		# unused value (NOT marked conditionally used), source: test3/BOUT.inp
+timestep = 0.001		# type: BoutReal, doc: Initial backward Euler timestep, source: test3/BOUT.inp
+timestep_factor_on_failure = 0.5		# type: BoutReal, doc: Multiply timestep on convergence failure, source: default
+timestep_factor_on_lower_its = 1.4		# type: BoutReal, doc: Multiply timestep if iterations are below lower_its, source: default
+timestep_factor_on_upper_its = 0.9		# type: BoutReal, doc: Multiply timestep if iterations exceed upper_its, source: default
+type = snes		# type: string, source: test3/BOUT.inp
+upper_its = 12		# type: int, doc: Iterations above which the next timestep is reduced, source: default
+use_coloring = true		# type: bool, doc: Use matrix coloring to calculate Jacobian?, source: default
+use_precon = false		# type: bool, doc: Use user-supplied preconditioner?, source: default
+
+[solver:stencil]
+cross = 0		# type: int, doc: Extent of stencil (cross), source: default
+square = 0		# type: int, doc: Extent of stencil (square), source: default
+taxi = 0		# type: int, doc: Extent of stencil (taxi-cab norm), source: default
+
+[sound_speed]
+alfven_wave = false		# type: bool, doc: Include Alfven wave speed?, source: default
+electron_dynamics = true		# type: bool, doc: Include electron sound speed?, source: default
+fastest_wave_factor = 0		# type: BoutReal, doc: Multiply the fastest wave by this factor, affecting lax flux strength, source: default
+temperature_floor = 0		# type: BoutReal, doc: Minimum temperature when calculating sound speeds [eV], source: default
+Tesla = 1		# unused value (marked conditionally used)
+eV = 10
+inv_meters_cubed = 1e+20
+meters = 0.000323105
+seconds = 1.04397e-08

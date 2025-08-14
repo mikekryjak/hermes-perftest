@@ -1,50 +1,66 @@
 #
 
 nout = 10                     # Number of output timesteps
-timestep = 95788 * 0.2        # 95788 = 1ms in normalised units
+timestep = 95788 * 0.01        # 95788 = 1ms in normalised units
 
 MZ = 1
 NXPE = 1
 
+####### NOTES
+####### Target values: Te: 1450, Ti: 1745, Ne: 7.4e19
+####### Target core diffusion: De = Di = 0.3, Chi_e = Chi_i = 0.45
 
 ####### CUSTOM INPUTS
+# Actual temperature method
+#core_te = 40 / hermes:Tnorm   # [eV]
+#core_ti = 40 / hermes:Tnorm   # [eV]
 
-# Power and particle input in core
-power_mult = 0.3 * 1.5
-particle_mult = 0.5
+# Tnorm scale method. Temp = core_te * tnorm_setting
+tnorm_setting = 100
 
-electron_power = 0.76e6 * power_mult 
-ion_power = 1e6 * power_mult
-particle_source = 3e21 * particle_mult
+core_te = 1500 / tnorm_setting    # 1450
+core_ti = 1500 / tnorm_setting    # 1745
+core_ne = 7e19 / hermes:Nnorm    # Nm-3
 
-# Total volume of core ring and its shape
-core_volume = 0.1806751354696394  # [m3]  from post-processing
-core_source_shape = H(x) * H(0.05-x)
+initial_te = core_te * 0.1
+initial_ti = core_ti * 0.1
+initial_ne = core_ne * 1
 
-# Initial conditions
-initial_te = 50 / hermes:Tnorm   # [eV]
-initial_ti = 50 / hermes:Tnorm   # [eV]
-initial_ne = 3e19 / hermes:Nnorm  # [m^-3]
 initial_pe = initial_te * initial_ne
 initial_pi = initial_ti * initial_ne
 
-# Anomalous diffusion
-coeff_D = 1
-coeff_Chi = 3
+####### DERIVED FROM CUSTOM INPUTS
+core_pi = core_ne * core_ti    
+core_pe = core_ne * core_te    
+
+# Below is set from grid now
+# anomalous_D_i_core = anomalous_D_e_core    # Same as electrons
+# anomalous_Chi_i_core = anomalous_Chi_e_core    # Same as electrons
 
 [input]
 error_on_unused_options = false    # Prevents crash from custom inputs
 
 [mesh]
-file = "grid_test1.nc"
+        
+file = "grid_test2.nc"
+
+# Geometry calculations for profiles
+# This is adapted from https://bout-dev.readthedocs.io/en/latest/user_docs/variable_init.html#id4
+# The index (i) is defined as excluding guards, hence I add "+ MXG" at the enabled
+# Remember to manually change these numbers if you change grid!!!
+
+xsep_inner = 19  # Last cell before separatrix (ixseps - 1)
 nx = 40
 MXG = 2
+x_index = x*(nx - 2 * MXG) - 0.5 + MXG
+
 
 [mesh:paralleltransform]
 type = shifted
 
 [solver]
-diagnose = true
+diagnose = True
+
 type = snes                      # Backward Euler steady-state solver
 snes_type = newtonls             # Nonlinear solver
 ksp_type = gmres                 # Linear solver: gmres, cg
@@ -52,8 +68,8 @@ max_nonlinear_iterations = 16    # default: 50
 pc_type = hypre                  # Preconditioner type
 pc_hypre_type = ilu         
 lag_jacobian = 7                 # Iterations between jacobian recalculations. default: 50
-atol = 1e-12                      # Absolute tolerance
-rtol = 1e-6                      # Relative tolerance
+atol = 1e-10                      # Absolute tolerance
+rtol = 1e-4                      # Relative tolerance
 stol = 1e-12
 maxf = 20000
 maxl = 260
@@ -75,7 +91,6 @@ pc_hypre_ilu_tri_solve = true                     # use triangular solve instead
 pc_hypre_ilu_print_level = true
 snes_fd_color_use_mat = true
 
-
 [hermes]
 components = (d+, d, e,
               collisions, sheath_boundary_simple, recycling, 
@@ -85,7 +100,7 @@ components = (d+, d, e,
 
 Nnorm = 1e17  # Reference density [m^-3]
 Bnorm = 1   # Reference magnetic field [T]
-Tnorm = 300   # Reference temperature [eV]
+Tnorm = tnorm_setting   # Reference temperature [eV]
 qe = 1.60218e-19
 Mp = 1.67262e-27
 Cs0 = sqrt(qe * Tnorm / Mp)
@@ -97,8 +112,14 @@ diagnose = true
 electron_electron = true
 ion_ion = true
 electron_ion = true
+
+# EN
 electron_neutral = false
+
+# IN
 ion_neutral = false
+
+# NN
 neutral_neutral = false
 
 ################################################################
@@ -112,60 +133,67 @@ charge = 1
 
 thermal_conduction = true
 kappa_limit_alpha = -1 # No flux limiter for ions
+conduction_collisions_mode = braginskii
 
 recycle_as = d
 target_recycle = true
-target_recycle_multiplier = 0.95
+target_recycle_multiplier = 1
 target_recycle_energy = 3.5
 
 sol_recycle = true
-sol_recycle_multiplier = 0.95
+sol_recycle_multiplier = 1
 sol_recycle_energy = 3.5
 
 pfr_recycle = true
-pfr_recycle_multiplier = 0.95
+pfr_recycle_multiplier = 1
 pfr_recycle_energy = 3.5
+
+neutral_pump = true
+pump_recycle_multiplier = 0.968   
 
 target_fast_recycle_energy_factor = 0.48
 target_fast_recycle_fraction = 0.80
 
-anomalous_D = coeff_D
-anomalous_chi = coeff_Chi
 anomalous_nu = 0.2
 diagnose = true
 
 [Nd+]
 
 function = initial_ne
+# bndry_core = dirichlet(core_ne) # Now there is a source
 bndry_sol = decaylength(0.03 / hermes:rho_s0)
 bndry_pf = decaylength(0.03 / hermes:rho_s0)
 bndry_all = neumann   # All boundaries neumann
-source = particle_source / core_volume * core_source_shape  # s^-1 m^-3
-source_only_in_core = true
 
 [Pd+]
 
 function = initial_pi
+# bndry_core = dirichlet(core_pi) # Now there is a source
 bndry_sol = decaylength(0.03 / hermes:rho_s0)
 bndry_pf = decaylength(0.03 / hermes:rho_s0)
 bndry_all = neumann   # All boundaries neumann
-source = ion_power * 2/3 / core_volume * core_source_shape    # Pa s^-1 m^-3
-source_only_in_core = true
 
 ################################################################
 # Neutrals
 
 [d]
 type = neutral_mixed, neutral_boundary
-
-precondition = false
-neutral_conduction = true
-neutral_viscosity = true
-
 flux_limit = true
+maximum_mfp = 1.0
+perp_pressure_form = 1   # 5/3 factor
+heat_flux_limit_alpha = 0.25
+upwind_perp_diffusion = true
 AA = 2
 diagnose = true
+diagnose_eqns = true
 output_ddt = true
+nn_floor = 1e-8
+pn_floor = 1e-8
+perp_operator = 2
+
+precondition = true
+
+diffusion_collisions_mode = afn
 
 neutral_boundary_sol = true
 neutral_boundary_pfr = true
@@ -181,19 +209,29 @@ sol_fast_refl_fraction = 0.70
 pfr_fast_refl_fraction = 0.70
 
 [Pd]
-function = initial_pe / 1000
 bndry_sol = neumann  # This prevents advection of density or energy out of the SOL
 bndry_core = free_o3  # This allows density and energy advection out of core
 bndry_all = neumann
 
 [Nd]
-function = initial_ne / 1000
 bndry_sol = neumann 
 bndry_core = free_o3  # This allows density and energy advection out of core
 bndry_all = neumann
 
 [Td]
 bndry_sol = neumann  
+bndry_all = neumann
+
+[Dnnd]
+bndry_all = neumann
+
+[DnnPnd]
+bndry_all = neumann
+
+[DnnTnd]
+bndry_all = neumann
+
+[DnnNnd]
 bndry_all = neumann
 
 ################################################################
@@ -208,20 +246,17 @@ AA = 1/1836
 charge = -1
 thermal_conduction = true
 kappa_limit_alpha = 0.2
+conduction_collisions_mode = braginskii
 
-anomalous_D = coeff_D
-anomalous_chi = coeff_Chi
 anomalous_nu = 0.2
 diagnose = true
 
 [Pe]
 function = initial_pi
+# bndry_core = dirichlet(core_pi) # Now there is a source
 bndry_sol = decaylength(0.03 / hermes:rho_s0)
 bndry_pfr = decaylength(0.03 / hermes:rho_s0)
 bndry_all = neumann   # All other boundaries low density
-
-source = electron_power * 2/3 / core_volume * core_source_shape    # Pa s^-1 m^-3
-source_only_in_core = true
 
 ################################################################
 [sheath_boundary_simple]
