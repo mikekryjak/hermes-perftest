@@ -1,0 +1,3 @@
+[submodule "sdtools"]
+	path = sdtools
+	url = https://github.com/mikekryjak/sdtools

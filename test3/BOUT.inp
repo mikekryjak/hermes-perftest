@@ -1,0 +1,287 @@
+# 2D Tokamak transport simulation with deuterium, recycling, impurity radiation
+# We need to include ExB and diamagnetic drifts -> relax_potential or vorticity
+
+nout = 20          # Number of output steps
+timestep = 100      # Output timestep, normalised ion cyclotron times [1/Omega_ci]
+
+MZ = 1            # Number of points in Z (toroidal) direction
+# zperiod = 5    # Fraction of a torus to simulate (not used here)
+
+scale_T = 0.1
+
+# Core boundary condition
+
+core_te = scale_T * 1618.097 / hermes:Tnorm   # [eV]
+core_ti = scale_T * 1881.145 / hermes:Tnorm   # [eV]
+core_ne = 0.6404e20 / hermes:Nnorm    # Nm-3
+
+
+# Diffusion coefficients
+
+anomalous_D_e_core = 0.3     # Density diffusion [m^2/s]
+anomalous_Chi_e_core = 0.3
+anomalous_D_e_sol = 1.0
+anomalous_Chi_e_sol = 3.0
+
+anomalous_D_i_core = 0.3
+anomalous_Chi_i_core = 0.3
+anomalous_D_i_sol = 1.0
+anomalous_Chi_i_sol = 3.0
+
+# Initial conditions
+
+initial_te = core_te
+initial_ti = core_ti
+initial_ne = 0.6404e20 / hermes:Nnorm 
+
+####### DERIVED FROM CUSTOM INPUTS
+initial_pe = initial_te * initial_ne
+initial_pi = initial_ti * initial_ne
+core_pi = core_ne * core_ti
+core_pe = core_ne * core_te
+
+[input]
+error_on_unused_options=false
+
+[mesh]
+
+file = "grid_test3.nc"
+
+extrapolate_y = false # Can result in negative Jacobians in guard cells
+
+# Geometry calculations for profiles
+# This is adapted from https://bout-dev.readthedocs.io/en/latest/user_docs/variable_init.html#id4
+# The index (i) is defined as excluding guards, hence I add "+ MXG" at the enabled
+# Remember to manually change these numbers if you change grid!!!
+
+xsep_inner = 30  # Last cell before separatrix (ixseps - 1)
+nx = 44
+MXG = 2
+x_index = x*(nx - 2 * MXG) - 0.5 + MXG
+
+[mesh:paralleltransform]
+type = shifted
+
+[solver]
+type = snes                      # Backward Euler steady-state solver
+snes_type = newtonls             # Nonlinear solver
+ksp_type = gmres                 # Linear solver: gmres, cg
+max_nonlinear_iterations = 16    # default: 50
+pc_type = hypre                  # Preconditioner type
+pc_hypre_type = ilu         
+lag_jacobian = 7                 # Iterations between jacobian recalculations. default: 50
+atol = 1e-12                      # Absolute tolerance
+rtol = 1e-6                      # Relative tolerance
+stol = 1e-12
+maxf = 20000
+maxl = 260
+pidController = true
+target_its = 5
+kP = 0.65
+kI = 0.30
+kD = 0.15
+matrix_free_operator = true
+
+# timestep = 0.001                 # Initial timestep
+
+[petsc]
+
+#log_view = true
+                                    
+pc_hypre_ilu_level = 1                            # k = 2  (default is 0, try 1 and 2)
+pc_hypre_ilu_local_reordering = true              # reduces fill / improves robustness
+pc_hypre_ilu_tri_solve = true                     # use triangular solve instead of smoothing
+pc_hypre_ilu_print_level = true
+snes_fd_color_use_mat = true
+
+[hermes]
+# With neutrals / No drifts
+components = (d+, d, e,
+              collisions, sheath_boundary_simple, recycling, 
+              sound_speed, 
+              reactions,
+              electron_force_balance)
+
+Nnorm = 1e20  # Reference density [m^-3]
+Bnorm = 1     # Reference magnetic field [T]
+Tnorm = scale_T * 100     # Reference temperature [eV]
+
+qe = 1.60218e-19
+Mp = 1.67262e-27
+Cs0 = sqrt(qe * hermes:Tnorm / Mp)
+Omega_ci = qe * hermes:Bnorm / Mp
+rho_s0 = Cs0 / Omega_ci
+
+
+[sheath_boundary_simple]
+gamma_i = 3.5  # Ion sheath heat transmission coefficient
+gamma_e = 4.8  # Electron sheath heat transmission coefficient
+
+[collisions]
+ei_multiplier = 1.0    # Multiply electron-ion collision frequency, and so resistivity.
+diagnose = true
+electron_electron = true    # default: True
+ion_ion = true              # default: True
+electron_ion = true         # default: True
+electron_neutral = true    # default: False
+ion_neutral = true         # default: False   # double counting with CX if true
+neutral_neutral = true      # default: True
+diagnose = true
+
+################################################################
+# Ions
+
+[d+]
+type = evolve_density, evolve_momentum, evolve_pressure, anomalous_diffusion
+
+AA = 2
+charge = 1
+anomalous_nu = 0.1
+
+thermal_conduction = true
+
+kappa_limit_alpha = 1           # default: <0 turned off
+eta_limit_alpha = 0.5           # default: <0 turned off (in i,e viscosity)
+
+recycle_as = d
+target_recycle = true
+target_recycle_multiplier = 0.999  # Recycling fraction 
+target_recycle_energy = 3.5 # default: 3 [ev]
+
+sol_recycle = true                  # default: False 
+sol_recycle_multiplier = 0.999   
+sol_recycle_energy = 3.5 # default: 3 [ev]
+
+pfr_recycle = true                  # default: False 
+pfr_recycle_multiplier = 0.999   
+pfr_recycle_energy = 3.5 # default: 3 [ev]
+
+neutral_pump = true                 # default: False 
+pump_recycle_multiplier = 0.999 #  
+
+target_fast_recycle_energy_factor = 0.48        # Fraction of energy retained by fast recycled neutrals at target
+target_fast_recycle_fraction = 0.80             # Fraction of ions undergoing fast reflection at target
+
+diagnose = true
+precondition = true
+
+[Nd+]
+function = initial_ne
+bndry_core = dirichlet(core_ne)
+bndry_sol = decaylength(0.03 / hermes:rho_s0)
+bndry_pf = decaylength(0.03 / hermes:rho_s0)
+bndry_all = neumann   # All boundaries neumann
+initialize_from_mesh = true #true  # Should be in SI units with name: <variable name>_init
+
+[Pd+]
+function = initial_pi
+bndry_core = dirichlet(core_pi)
+bndry_sol = decaylength(0.03 / hermes:rho_s0)   # lambda q beyond the grid (ask David)
+bndry_pf = decaylength(0.03 / hermes:rho_s0)
+bndry_all = neumann   # All boundaries neumann
+initialize_from_mesh = true #true  # Should be in SI units with name: <variable name>_init
+
+[NVd+]
+bndry_all = neumann
+
+[Vd+]
+bndry_all = neumann
+
+################################################################
+# Neutrals
+[d]
+type = neutral_mixed, neutral_boundary
+AA = 2
+zero_timederivs = false
+diagnose = true
+output_ddt = true
+precondition = true
+
+density_floor = 1e-5
+#freeze_low_density = true
+
+#diffusion_limit = 100.0
+#flux_limit = 0.2
+
+
+neutral_boundary_sol = true
+neutral_boundary_pfr = true
+neutral_boundary_upper_y = true
+neutral_boundary_lower_y = true
+
+target_energy_refl_factor = 0.70       # how much energy is kept during fast reflection
+sol_energy_refl_factor = 0.67
+pfr_energy_refl_factor = 0.67
+
+target_fast_refl_fraction = 0.80       # how likely to fast reflection (keep numbers same)
+sol_fast_refl_fraction = 0.70
+pfr_fast_refl_fraction = 0.70
+
+kappa_limit_alpha = 1
+
+[Pd]
+bndry_sol = neumann  # This prevents advection of density or energy out of the SOL
+bndry_core = neumann
+bndry_all = neumann
+
+[NVd]
+bndry_all = neumann
+
+[NVn]
+bndry_all = neumann
+
+[Vd]
+bndry_all = neumann
+
+[Vn]
+bndry_all = neumann
+
+################################################################
+# Electrons
+
+[e]
+# Set electron density from quasineutrality,
+# and parallel flow from ion flow, assuming no currents
+
+type = quasineutral, evolve_pressure, anomalous_diffusion, zero_current
+#type = quasineutral, evolve_pressure, anomalous_diffusion, evolve_momentum
+
+AA = 1/1836  # Atomic mass of electrons
+charge = -1  # Charge of electrons
+
+anomalous_nu = 0.1
+
+thermal_conduction = true
+kappa_limit_alpha = 0.3
+
+diagnose = true  # Save additional diagnostics?
+precondition = true
+
+[Pe]
+function = initial_pe
+bndry_core = dirichlet(core_pe)
+bndry_sol = decaylength(0.03 / hermes:rho_s0)
+bndry_pfr = decaylength(0.03 / hermes:rho_s0)
+bndry_all = neumann   # All other boundaries low density
+initialize_from_mesh = true #true  # Should be in SI units with name: <variable name>_init
+
+[NVe]
+bndry_all = neumann
+
+[Ve]
+bndry_all = neumann
+
+################################################################
+
+[recycling]
+species = d+
+
+[reactions]
+diagnose = true
+
+type = (
+        d + e -> d+ + 2e,     # Deuterium ionisation
+        d+ + e -> d,          # Deuterium recombination
+        d + d+ -> d+ + d,     # Charge exchange
+       )
+
