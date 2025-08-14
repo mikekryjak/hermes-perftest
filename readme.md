@@ -71,6 +71,8 @@ This test restarts from the baseline with x1.5 power and runs 10 output timestep
 Known performance on M. Kryjak's machine (see solver settings section):
  - SNES-1 settings: 5m 3s (~550 ms/24hrs)
 
+![Test 1 diagnostic output](mon_test1.png)
+
 ## Test 2
 Based on the full, unsimplified version of Test 1. It's a lot more computationally intensive than Test 1 
 and is on the critical path for the SOLPS comparison project. The test restarts from a steady state solution
@@ -84,6 +86,8 @@ with a lower neutral pump albedo, which leads to the reduction of plasma density
 Known performance on M. Kryjak's machine:
  - SNES-1 settings: 4m 44s (~30 ms/24hrs)
 
+![Test 2 diagnostic output](mon_test2.png)
+
 ## Test 3
 Based on DIII-D. Relevant to M. Tsagkiridis' project. It's a very challenging
 test because it's nearly from scratch, so everything is changing. Needs 10 cores to run.
@@ -91,6 +95,7 @@ test because it's nearly from scratch, so everything is changing. Needs 10 cores
 Known performance on M. Kryjak's machine:
  - SNES-1 settings: 3m 11s  (~8 ms/24hrs)
 
+![Test 3 diagnostic output](mon_test3.png)
 
 ## PETSc configuration
 To enable STRUMPACK, use the following configure flags for PETSc:
