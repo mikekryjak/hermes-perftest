@@ -148,7 +148,7 @@ rtol = 1e-6                      # Relative tolerance
 stol = 1e-12
 maxf = 20000
 maxl = 260
-pidController = true
+pid_controller = true
 target_its = 5
 kP = 0.65
 kI = 0.30
@@ -225,7 +225,7 @@ maxl = 260                                 # Max Krylov length (upper bound; FGM
 timestep = 0.001                           # Your initial Δt; PID below will adapt it.
 
 # Nonlinear time-step PID controller (keep; just retune target_its for new PC strength)
-pidController = true
+pid_controller = true
 target_its = 8                             # Aim KSP ~8 iters; adjust after a test (e.g., 6–12).
 kP = 0.65                                  # Proportional gain
 kI = 0.30                                  # Integral gain
@@ -275,8 +275,8 @@ matrix_free_operator = false
 lag_jacobian = 1
 timestep = 0.001
 
-pidController = true
-target_its = 6
+pid_controller = true
+target_its = 5
 kP = 0.65
 kI = 0.3 # 0.30
 kD = 0.15 # 0.15
@@ -301,3 +301,5 @@ mat_strumpack_reordering = metis      # or rcm, amd; pick the best
 
 snes_ksp_ew = true
 ```
+
+## SNES-STRUMPACK-3
