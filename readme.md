@@ -57,8 +57,12 @@ You can use another tool from `sdtools` to reset the test, which copies the rest
 transplant.py test1/base test1
 ```
 
-# Test cases
+# Test case warning
 
+**NOTE:** The tests are configured for a very short runtime so that they take 5 minutes. However this is often not representative of performance and you need to run it for a couple of hours to get a good idea. A suggested
+timestep for this is 95780 * 0.1, which is 0.1ms (95780 = 1ms in normalised time).
+
+# Test cases
 ## Test 1
 Based on a simplified, steady state low power solution based on the ST40 tokamak (see Kryjak @ APS 2023). 
 This test restarts from the baseline with x1.5 power and runs 10 output timesteps of 0.005ms each.
@@ -192,83 +196,20 @@ pc_factor_mat_solver_type = strumpack
 mat_strumpack_verbose = true
 ```
 
-# Suggested solver settings from ChatGPT
-
-## SNES-ASM-1
-
-From ChatGPT:
-
-- Replaces Hypre-ILU with ASM + ILU(k) to make each local problem “easier”.
-- Cuts lag_jacobian from 6 → 2 for a stronger, more current Pmat.
-- Switches gmres → fgmres for changing PCs.
-- Removes all pc_hypre_* (conflicts) and adds reordering/diagonal options that help ILU stability.
-
-ASM (Additive Schwarz Method) splits the global problem into overlapping subdomains, solves each locally (e.g., with ILU), and combines the results to precondition the whole system. For anisotropic problems like your SOL equations, this reduces the impact of long-range couplings, makes ILU more stable, and lets information travel across the grid via overlap, which you can tune for better performance.
-
-FGMRES (Flexible GMRES) is a Krylov solver like GMRES but designed for cases where the preconditioner changes between iterations, as happens when you lag the Jacobian or rebuild ILU factors periodically. It maintains stability and convergence in these situations with only minor extra cost.
-
-```
-[solver]
-diagnose = true
-type = snes                                # Use PETSc's nonlinear solver (SNES).
-snes_type = newtonls                       # Newton with line search (robust default).
-ksp_type = fgmres                          # Flexible GMRES: safer when the PC changes (we lag/rebuild Pmat).
-pc_type = asm                              # Additive Schwarz domain decomposition (wraps a stronger local solve).
-matrix_free_operator = true                # J*v via MFFD (cheap); we still assemble a Pmat for the PC.
-lag_jacobian = 2                           # Rebuild the Pmat every 2 Newton steps (was 6 in your file; stronger).
-max_nonlinear_iterations = 16              # Safety cap on Newton iterations.
-atol = 1e-12                               # Nonlinear abs tol (tight).
-rtol = 1e-6                                # Nonlinear relative tol (typical).
-stol = 1e-12                               # Step-norm tol (kept tight).
-maxf = 2000                                # Max function evals (safety).
-maxl = 260                                 # Max Krylov length (upper bound; FGMRES restarts internally if set).
-timestep = 0.001                           # Your initial Δt; PID below will adapt it.
-
-# Nonlinear time-step PID controller (keep; just retune target_its for new PC strength)
-pid_controller = true
-target_its = 8                             # Aim KSP ~8 iters; adjust after a test (e.g., 6–12).
-kP = 0.65                                  # Proportional gain
-kI = 0.30                                  # Integral gain
-kD = 0.15                                  # Derivative gain
-
-[petsc]
-# Monitors (turn off once you're happy)
-# snes_monitor = true                        # Print Newton residuals each iteration.
-# ksp_monitor_true_residual = true           # Print true linear residuals each linear solve.
-# snes_converged_reason = true               # Report why Newton stopped.
-# ksp_converged_reason = true                # Report why KSP stopped.
-
-# Additive Schwarz options
-pc_asm_overlap = 2                         # Overlap between subdomains; try 2–4. More overlap helps anisotropy.
-
-# Subdomain (local) solver used inside ASM
-sub_ksp_type = preonly                     # Just apply the preconditioner; no inner Krylov.
-sub_pc_type = ilu                          # Local ILU(k) factorization per subdomain.
-sub_pc_factor_levels = 2                   # ILU(k): k=2 is stronger than ILU(0/1); watch memory, try 1–4.
-sub_pc_factor_mat_ordering_type = rcm      # Reorder to reduce fill/zero pivots (try rcm vs nd).
-sub_pc_factor_nonzeros_along_diagonal = true  # Improves stability for ILU on tough matrices.
-
-# Don’t oversolve early Newton steps; lets KSP stop earlier when far from solution
-snes_ksp_ew = true
-```
-
-## SNES-STRUMPACK-2
-
-- This keeps the matrix-free operator, but the Pmat is assembled and factored by STRUMPACK.
-- Turning on mat_strumpack_compression trades a bit of factor accuracy for speed/memory — test both on/off.
-- If memory is fine and you want max robustness, leave compression off.
+## SNES-STRUMPACK-3
+STRUMPACK settings from M. Kryjak's optimisation. Here it's used as a direct solver.
 
 ```
 [solver]
 diagnose = true
 type = snes
 snes_type = newtonls   # newtontr not as good
-ksp_type = fgmres
-pc_type = ilu
+ksp_type = preonly
+pc_type = lu
 max_nonlinear_iterations = 16
-atol = 1e-12
+atol = 4e-8
 rtol = 1e-6
-stol = 1e-14
+stol = 0
 maxf = 2000
 maxl = 260
 matrix_free_operator = false
@@ -276,30 +217,64 @@ lag_jacobian = 1
 timestep = 0.001
 
 pid_controller = true
-target_its = 5
-kP = 0.65
+target_its = 3
+kP = 0.65   # 0.65
 kI = 0.3 # 0.30
 kD = 0.15 # 0.15
+# min_tstep_decrease = 0.5
+# max_tstep_increase = 1.2
 
 [petsc]
-# snes_monitor
-# ksp_monitor_true_residual
-#snes_converged_reason = false
-#ksp_converged_reason = false
 
 # STRUMPACK as factorization backend for ILU/LU
 pc_factor_mat_solver_type = strumpack
 
-# snes_linesearch_type = bt
-# snes_linesearch_damping = 0.6     # 0.5–0.7 is a good band
-# snes_linesearch_minlambda = 1e-4
+mat_strumpack_reordering = metis  # try amd/rcm if needed
+mat_strumpack_colperm = true      # allow column permutation for nonzero diagonal
+pc_factor_shift_type = NONZERO
+pc_factor_shift_amount = 1e-12
 
-# (Try one at a time; comment the others)
-mat_strumpack_reordering = metis      # or rcm, amd; pick the best
-# mat_strumpack_compression = blr      # if built with BLR/HSS; enables faster approx factors
-# mat_strumpack_compression = hss
-
-snes_ksp_ew = true
 ```
 
-## SNES-STRUMPACK-3
+## SNES-MUMPS-1
+MUMPS settings from H. Al Daas' optimisation on 13/09/25.
+Best performance as of 16/09/25.
+
+```
+[solver]
+diagnose = true
+type = snes
+snes_type = newtonls   # newtontr not as good
+ksp_type = fgmres
+pc_type = lu
+max_nonlinear_iterations = 10
+atol = 1e-7
+rtol = 1e-6
+stol = 1e-12
+maxf = 2000
+maxl = 260
+matrix_free_operator = false
+lag_jacobian = 1
+timestep = 0.1
+ 
+pid_controller = true
+target_its = 100
+kP = 0.233   # 0.65
+kI = 0.133 # 0.30
+kD = 0.0 # 0.15
+# min_tstep_decrease = 0.5
+# max_tstep_increase = 1.2
+ 
+[petsc]
+#snes_monitor
+#snes_converged_reason
+#ksp_converged_reason
+log_view
+snes_fd_color_use_mat
+ksp_type = fgmres
+pc_type = lu
+pc_factor_mat_solver_type = mumps
+snes_linesearch_type = basic
+
+```
+
