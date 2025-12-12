@@ -64,35 +64,38 @@ type = shifted
 
 [solver]
 diagnose = true
-type = snes                      # Backward Euler steady-state solver
-snes_type = newtonls             # Nonlinear solver
-ksp_type = gmres                 # Linear solver: gmres, cg
-max_nonlinear_iterations = 16    # default: 50
-pc_type = hypre                  # Preconditioner type
-pc_hypre_type = ilu         
-lag_jacobian = 7                 # Iterations between jacobian recalculations. default: 50
-atol = 1e-12                      # Absolute tolerance
-rtol = 1e-6                      # Relative tolerance
+type = snes
+snes_type = newtonls   # newtontr not as good
+ksp_type = fgmres
+pc_type = lu
+max_nonlinear_iterations = 10
+atol = 1e-7
+rtol = 1e-6
 stol = 1e-12
-maxf = 20000
+maxf = 2000
 maxl = 260
-pidController = true
-target_its = 5
-kP = 0.65
-kI = 0.30
-kD = 0.15
-matrix_free_operator = true
-timestep = 0.001                 # Initial timestep
-
+matrix_free_operator = false
+lag_jacobian = 1
+timestep = 0.1
+ 
+pid_controller = true
+target_its = 100
+kP = 0.233   # 0.65
+kI = 0.133 # 0.30
+kD = 0.0 # 0.15
+# min_tstep_decrease = 0.5
+# max_tstep_increase = 1.2
+ 
 [petsc]
-
-#log_view = true
-                                    
-pc_hypre_ilu_level = 1                            # k = 2  (default is 0, try 1 and 2)
-pc_hypre_ilu_local_reordering = true              # reduces fill / improves robustness
-pc_hypre_ilu_tri_solve = true                     # use triangular solve instead of smoothing
-pc_hypre_ilu_print_level = true
-snes_fd_color_use_mat = true
+#snes_monitor
+#snes_converged_reason
+#ksp_converged_reason
+log_view
+snes_fd_color_use_mat
+ksp_type = fgmres
+pc_type = lu
+pc_factor_mat_solver_type = mumps
+snes_linesearch_type = basic
 
 
 [hermes]

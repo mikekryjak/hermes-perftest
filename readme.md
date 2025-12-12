@@ -33,7 +33,8 @@ Time: 17865419.980739746, timestep: 0.028925465497599993, nl iter: 1, lin iter: 
 ```
 
 ## Hermes-3 and BOUT++ version requirements
-At the moment, you need to use commit d1cf522 (https://github.com/boutproject/hermes-3/pull/388)
+Use the this Hermes-3 master commit: 8430ce75a0162d915e42fc8146e283fc87d1c866
+Currently you need to use this BOUT++ version: https://github.com/boutproject/BOUT-dev/pull/3226
 
 ## Post-processing
 This repo includes M. Kryjak's personal post-processing script repo `sdtools`. The cases can be post-processed using the `cmonitor.py` tool:
@@ -73,8 +74,11 @@ This test restarts from the baseline with x1.5 power and runs 10 output timestep
 - Original grid ID: g3e4-lores_widev2_nonortho_xpoint.nc
 
 Known performance on M. Kryjak's machine (see solver settings section):
- - SNES-1 settings: 5m 3s (~550 ms/24hrs)
+ - SNES-1 settings: 5m 3s (~550 ms/24hrs) (Aug 2025)
+ - SNES-MUMPS-1 settings: 4m 45s (Dec 2025)
 
+### Performance with SNES-MUMPS-1 (default)
+![Test 1 diagnostic output](mon_test1.png)
 
 ## Test 2
 Based on the full, unsimplified version of Test 1. It's a lot more computationally intensive than Test 1 
@@ -87,17 +91,12 @@ with a lower neutral pump albedo, which leads to the reduction of plasma density
 - Original grid ID: g3e4f1-lores_widev2_nonortho_xpoint_allf.nc
 
 Known performance on M. Kryjak's machine (short):
- - SNES-1 settings: 4m 44s (~30 ms/24hrs)
- - SNES-STRUMPACK-2 settings: 45s
+ - SNES-1 settings: 4m 44s (~30 ms/24hrs) (Sept 2025)
+ - SNES-STRUMPACK-2 settings: 45s  (Sept 2025)
+ - SNES-MUMPS-1 settings: 1m 42s (Dec 2025)
 
-### Performance with SNES-MUMPS-1 over longer time period
-![Test 2 diagnostic output](mon_test2-SNES-MUMPS-1-long.png)
-
-<!-- ### Performance with SNES-1
+### Performance with SNES-MUMPS-1 (default)
 ![Test 2 diagnostic output](mon_test2.png)
-
-### Performance with SNES-STRUMPACK-2
-![Test 2 diagnostic output, STRUMPACK-2](mon_test2-SNES-STRUMPACK-2.png) -->
 
 
 ## Test 3
@@ -105,10 +104,11 @@ Based on DIII-D. Relevant to M. Tsagkiridis' project. It's a very challenging
 test because it's nearly from scratch, so everything is changing. Needs 10 cores to run.
 
 Known performance on M. Kryjak's machine:
- - SNES-1 settings: 3m 11s  (~8 ms/24hrs)
+ - SNES-1 settings: 3m 11s  (~8 ms/24hrs) (Sept 2025)
+ - SNES-MUMPS-1 settings: 26s (Dec 2025)
 
-<!-- ### Performance with SNES-1
-![Test 3 diagnostic output](mon_test3.png) -->
+### Performance with SNES-MUMPS-1 (default)
+![Test 3 diagnostic output](mon_test3.png)
 
 ## PETSc configuration
 To enable STRUMPACK, use the following configure flags for PETSc:
