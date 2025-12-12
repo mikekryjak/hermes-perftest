@@ -99,6 +99,15 @@ Known performance on M. Kryjak's machine (short):
 ![Test 2 diagnostic output](mon_test2.png)
 
 
+## Test 2long
+Same as test 3 but ran for 3ms, which is short enough to be quick to run using good recipes but long enough to capture both the initial transient and a bit of the steady state.
+
+Known performance on M. Kryjak's machine (short):
+ - SNES-MUMPS-1 settings: 7m 1s (Dec 2025)
+
+ ### Performance with SNES-MUMPS-1 (default)
+![Test 2long diagnostic output](mon_test2long.png)
+
 ## Test 3
 Based on DIII-D. Relevant to M. Tsagkiridis' project. It's a very challenging
 test because it's nearly from scratch, so everything is changing. Needs 10 cores to run.
