@@ -358,7 +358,7 @@ pc_type = lu
 pc_monitor = true
 ```
 
-## PTC-1
+## SNES-PTC-1
 
 Pseudo-Transient Continuation (PTC) with SNES solver.  Timestep varies
 by cell so the output timestep is the minimum over the whole domain.
