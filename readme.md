@@ -325,35 +325,31 @@ Experimental, initial pseudo timestep settings
 ```
 [solver]
 diagnose = true
-pseudo_time_stepping = true
 type = petsc
+pseudo_time_stepping = true
 max_nonlinear_iterations = 16
 atol = 4e-8
 rtol = 1e-6
 matrix_free_operator = false
-# lag_jacobian = 1
 start_timestep = 1e-6
 use_jacobian = true
 interpolate = false
-
+diagnose = true
 
 [petsc]
-ts_type = pseudo
-ts_pseudo_monitor = true
-# ts_monitor = true
 log_view = true
 
-snes_type = newtonls   # newtontr not as good
-# snes_monitor_short = true
-snes_rtol = 1e-6
-snes_atol = 4e-8
+ts_type = pseudo
+ts_pseudo_monitor = true
+ts_pseudo_increment = 1.2
+ts_adapt_type = basic
 ts_max_reject = 50
 ts_max_steps = 1000
 
-ts_adapt_type = basic
-
-ksp_type = fgmres
+snes_type = newtonls
+snes_rtol = 1e-6
+snes_atol = 1e-7
 pc_type = lu
-# ksp_monitor_short = true
-pc_monitor = true
+ksp_type = fgmres
+pc_factor_mat_solver_type = mumps
 ```
