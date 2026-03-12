@@ -1,0 +1,204 @@
+MZ = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+NXPE = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+datadir = mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03		# type: string, source: Command line
+initial_ne = 0.5e18 / hermes:Nnorm		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+initial_pi = initial_ti * initial_ne		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+initial_ti = 25 / tnorm_setting		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+nout = 20000000		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+optionfile = BOUT.inp		# type: string, source: default
+restart = true		# unused value (NOT marked conditionally used), source: Command line
+settingsfile = BOUT.settings		# type: string, source: default
+timestep = 95780 * 0.01		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+tnorm_setting = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Dnnd]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Nd]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_core = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_sol = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Nd+]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_core = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_pf = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_sol = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+function = initial_ne		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Pd]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_core = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_sol = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Pd+]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_core = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_pf = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_sol = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+core_volume = 0.29689		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+function = initial_pi		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+power_in = 0.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pressure_source = power_in * 1e6 * 2/3 / core_volume		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+source = H(x) * H(0.035-x) * pressure_source		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+source_only_in_core = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Pe]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_core = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_pf = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_sol = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+core_volume = 0.29689		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+function = initial_pi		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+power_in = 0.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pressure_source = power_in * 1e6 * 2/3 / core_volume		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+source = H(x) * H(0.035-x) * pressure_source		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+source_only_in_core = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[Td]
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+bndry_sol = neumann		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[braginskii_collisions]
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+electron_electron = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+electron_ion = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+electron_neutral = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+ion_ion = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+ion_neutral = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_neutral = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[c]
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+fraction = 0.0		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+no_core_radiation = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+type = fixed_fraction_carbon		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[d]
+AA = 2		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+diffusion_collisions_mode = afn		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+evolve_momentum = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+flux_limit = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+kappa_limit_alpha = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_boundary_lower_y = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_boundary_pfr = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_boundary_sol = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_boundary_upper_y = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_lmax = 100		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+output_ddt = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pfr_energy_refl_factor = 0.67		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pfr_fast_refl_fraction = 0.7		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+precondition = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+sol_energy_refl_factor = 0.67		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+sol_fast_refl_fraction = 0.7		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_energy_refl_factor = 0.7		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_fast_refl_fraction = 0.8		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+type = neutral_mixed, neutral_boundary		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[d+]
+AA = 2		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+anomalous_nu = 2		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+charge = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+conduction_collisionality_mode = braginskii		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+eta_limit_alpha = -1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+kappa_limit_alpha = -1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+neutral_pump = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pfr_recycle = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pfr_recycle_energy = 3.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pfr_recycle_multiplier = 0.99		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pump_recycle_multiplier = 0.99		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+recycle_as = d		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+sol_recycle = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+sol_recycle_energy = 3.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+sol_recycle_multiplier = 0.99		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_fast_recycle_energy_factor = 0.48		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_fast_recycle_fraction = 0.8		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_recycle = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_recycle_energy = 3.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_recycle_multiplier = 0.99		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+thermal_conduction = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+type = evolve_density, evolve_momentum, evolve_pressure, anomalous_diffusion		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[e]
+AA = 1/1836		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+charge = -1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+conduction_collisionality_mode = braginskii		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+kappa_limit_alpha = -1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+thermal_conduction = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+type = quasineutral, evolve_pressure, zero_current, anomalous_diffusion		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[electromagnetic:laplacian]
+atol_accept = 1e-06		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+maxits = 1000		# unused value (NOT marked conditionally used), type: int, source: user_default
+rtol_accept = 0.01		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
+type = naulin		# unused value (NOT marked conditionally used), type: string, source: user_default
+
+[hermes]
+Bnorm = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+Cs0 = sqrt(qe * Tnorm / Mp)		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+Mp = 1.67262e-27		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+Nnorm = 1e+17		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+Omega_ci = qe * Bnorm / Mp		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+Tnorm = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+components = (d+, d, e, c,  braginskii_collisions,braginskii_friction, braginskii_heat_exchange,braginskii_conduction,sheath_boundary_simple, recycling, sound_speed, reactions, electron_force_balance)		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+qe = 1.60218e-19		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+rho_s0 = Cs0 / Omega_ci		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[input]
+error_on_unused_options = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[mesh]
+calcParallelSlices_on_communicate = false		# unused value (NOT marked conditionally used), type: bool, source: user_default
+file = CDN_46895_260129_nowallpump_1e21.nc		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[mesh:paralleltransform]
+type = shifted		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[petsc]
+ksp_type = fgmres		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+log_view = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pc_factor_mat_solver_type = mumps		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pc_type = lu		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+snes_fd_color_use_mat = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+snes_linesearch_type = basic		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[reactions]
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+type = ( d + e -> d+ + 2e, d+ + e -> d, d + d+ -> d+ + d, )		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[recycling]
+species = d+		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[run]
+revision = 7d28d67c3f12c24ec281c0982e870f5369c65a6f		# unused value (NOT marked conditionally used), source: Output
+started = Tue Mar  3 16:17:31 2026
+		# unused value (NOT marked conditionally used), source: Output
+version = 5.2.1		# unused value (NOT marked conditionally used), source: Output
+
+[sheath_boundary_simple]
+gamma_e = 4.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+gamma_i = 2.5		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+
+[solver]
+atol = 1e-7		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+diagnose = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+kD = 0.0		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+kI = 0.133		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+kP = 0.233		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+ksp_type = fgmres		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+lag_jacobian = 1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+matrix_free_operator = false		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+max_nonlinear_iterations = 10		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+maxf = 2000		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+maxl = 260		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pc_type = lu		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+pid_controller = true		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+rtol = 1e-6		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+snes_type = newtonls		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+stol = 1e-8		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+target_its = 100		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+timestep = 0.1		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp
+type = snes		# unused value (NOT marked conditionally used), source: mastu2d-lin/m2ul2-first_flux_limmiters_2026-03-03/BOUT.inp

@@ -116,6 +116,14 @@ Known performance on M. Kryjak's machine:
  - SNES-1 settings: 3m 11s  (~8 ms/24hrs) (Sept 2025)
  - SNES-MUMPS-1 settings: 26s (Dec 2025)
 
+## Test 4 
+Based on MAST-U, relevant to L. Shih's PhD project.
+Needs 20 cores to run. Must be run on this commit:
+9497476
+
+Original case ID: m2ul2.
+Original grid ID: CDN_46895_260129_nowallpump_1e21.nc
+
 ### Performance with SNES-MUMPS-1 (default)
 ![Test 3 diagnostic output](mon_test3.png)
 
