@@ -1,0 +1,252 @@
+nout = 50            # number of writes
+timestep = 95780 * 0.01          # 9578 is 1/10 of a milisecond
+
+MZ = 1                  # points in z
+NXPE = 1                # partitions in x
+
+# Initial conditions
+tnorm_setting = 1
+#initial_te = 25 / tnorm_setting
+initial_ti = 25 / tnorm_setting
+initial_ne = 0.5e18 / hermes:Nnorm    # Nm-3
+#initial_pe = initial_te * initial_ne
+initial_pi = initial_ti * initial_ne
+
+[input]
+error_on_unused_options = false #true
+
+[mesh]
+file = "grid_test5.nc"             # Tokamak grid file, must be in same directory
+
+[mesh:paralleltransform]                # Here be dragons *wrapping of field lines
+type = shifted
+
+#######################solver########################
+[solver]                                # cvode (Beuler not very good in 2D atm)
+type = cvode 				# Added by Lin 0926
+mxstep = 1e9                            # Max steps (set to max)
+mxorder = 1                             # Better to keep to first order
+atol = 1e-12 * 1                        # don't touch
+rtol = 1e-7 * 1                         # this value is good for most cases (could set to 1e-4)
+use_precon = True                       # always true
+
+#######################solver########################
+[hermes]
+components = (d+, d, e, c,  braginskii_collisions, 
+                braginskii_friction, braginskii_heat_exchange,braginskii_conduction,
+                sheath_boundary_simple, recycling, sound_speed, reactions, electron_force_balance)                           # These are all we want
+
+Nnorm = 1e+17  # Reference density [m^-3]                        # Keep as this for now
+Bnorm = 1   # Reference magnetic field [T]
+Tnorm = 1 #tnorm_setting   # Reference temperature [eV]
+qe = 1.60218e-19
+Mp = 1.67262e-27
+Cs0 = sqrt(qe * Tnorm / Mp)
+Omega_ci = qe * Bnorm / Mp
+rho_s0 = Cs0 / Omega_ci
+
+
+[braginskii_collisions]
+diagnose = true
+electron_electron = true
+ion_ion = true
+electron_ion = true
+electron_neutral = false
+ion_neutral = false             # double counting with CX if true
+neutral_neutral = false
+
+################################################################
+# Ions
+
+[d+]
+type = evolve_density, evolve_momentum, evolve_pressure, anomalous_diffusion
+
+AA = 2
+charge = 1
+
+thermal_conduction = true
+conduction_collisions_mode = braginskii
+
+
+kappa_limit_alpha = -1
+eta_limit_alpha = -1
+# Change to match david
+
+recycle_as = d
+target_recycle = true
+target_recycle_multiplier = 0.99
+target_recycle_energy = 3.5
+
+sol_recycle = false
+sol_recycle_multiplier = 0.99
+sol_recycle_energy = 3.5
+
+pfr_recycle = false
+pfr_recycle_multiplier = 0.99
+pfr_recycle_energy = 3.5
+
+neutral_pump = true 
+pump_recycle_multiplier = 0.99
+
+target_fast_recycle_energy_factor = 0.48        # Keep as same
+target_fast_recycle_fraction = 0.8             # Keep as same
+
+anomalous_nu = 2 # 0.2    ### change to davids
+diagnose = true
+
+[Nd+]
+
+function = initial_ne                           # initial conditions (see above)
+bndry_core = neumann
+bndry_sol = neumann
+bndry_pf = neumann
+bndry_all = neumann   # All boundaries neumann  # Keep as neumann
+
+[NVd+]
+bndry_sol = neumann
+bndry_core = neumann
+bndry_pf = neumann
+
+[Vd+]
+bndry_sol = neumann
+bndry_core = neumann
+bndry_pf = neumann
+
+[Pd+]
+
+function = initial_pi
+bndry_core = neumann
+bndry_sol = neumann
+bndry_pf = neumann  
+bndry_all = neumann   # All boundaries neumann
+
+# Core source
+power_in = 0.5 # 0.3   # MW
+core_volume = 0.29689 #0.17737   # m^3
+pressure_source = power_in * 1e6 * 2/3 / core_volume
+source = H(x) * H(0.035-x) * pressure_source #0.007 #0.071
+source_only_in_core = true
+
+
+################################################################
+# Neutrals
+
+[d]
+type = neutral_mixed, neutral_boundary
+evolve_momentum = true                  # make sure on
+precondition = false   # currently preconditioner is not good
+diffusion_collisions_mode = afn
+
+# Added to match the ST40 branch
+flux_limit = 1
+neutral_lmax = 0.1 # it should be 0.1 m not 100
+# Added to match the ST40 branch for 94974 branch
+double_count_lmax = false
+legacy_thermal_speed = false
+legacy_limiter_form = false
+
+
+AA = 2
+diagnose = true
+#diagnose_eqns = true
+
+output_ddt = true
+
+neutral_boundary_sol = true
+neutral_boundary_pfr = true
+neutral_boundary_upper_y = true
+neutral_boundary_lower_y = true
+
+target_energy_refl_factor = 0.7                # how much energy is kept during fast reflection
+sol_energy_refl_factor = 0.67
+pfr_energy_refl_factor = 0.67
+
+target_fast_refl_fraction = 0.8                # how likely to fast reflection (keep numbers same)
+sol_fast_refl_fraction = 0.7
+pfr_fast_refl_fraction = 0.7
+
+kappa_limit_alpha = 1
+
+[Pd]
+bndry_sol = neumann  # This prevents advection of density or energy out of the SOL
+bndry_core = neumann
+bndry_all = neumann
+
+[Nd]
+bndry_sol = neumann
+bndry_core = neumann
+bndry_all = neumann
+
+[NVd]
+bndry_sol = neumann
+bndry_core = neumann
+bndry_pf = neumann
+
+[Vd]
+bndry_sol = neumann
+bndry_core = neumann
+bndry_pf = neumann
+
+# These are defaults
+##################
+[Td]
+bndry_sol = neumann
+bndry_all = neumann
+
+[Dnnd]
+bndry_all = neumann
+
+################################################################
+# Electrons
+
+[e]
+# Set electron density from quasineutrality,
+# and parallel flow from ion flow, assuming no currents
+type = quasineutral, evolve_pressure, zero_current, anomalous_diffusion
+
+AA = 1/1836
+charge = -1
+thermal_conduction = true
+kappa_limit_alpha = -1 #0.3 # matches David now
+diagnose = true
+conduction_collisions_mode = braginskii
+
+
+[Pe]
+function = initial_pi
+bndry_core = neumann
+bndry_sol = neumann
+bndry_pf = neumann
+bndry_all = neumann   # All other boundaries low density
+
+# Core source
+power_in = 0.5 # 0.3   # MW
+core_volume = 0.29689 #0.17737   # m^3
+pressure_source = power_in * 1e6 * 2/3 / core_volume
+source = H(x) * H(0.035-x) * pressure_source
+source_only_in_core = true
+
+################################################################
+
+[c]
+type = fixed_fraction_carbon
+fraction = 0.0
+no_core_radiation = true
+diagnose = true   # Saves Rc (R + section name)
+
+################################################################
+[sheath_boundary_simple]
+gamma_i = 2.5   # matches David now
+gamma_e = 4.5   # matches David now
+
+
+
+[recycling]
+
+species = d+
+
+[reactions]
+
+diagnose = true
+
+type = ( d + e -> d+ + 2e, d+ + e -> d, d + d+ -> d+ + d, )     # Deuterium ionisation  Deuterium recombination  Charge exchange

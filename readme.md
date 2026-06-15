@@ -58,10 +58,6 @@ You can use another tool from `sdtools` to reset the test, which copies the rest
 transplant.py test1/base test1
 ```
 
-# Test case warning
-
-**NOTE:** The tests are configured for a very short runtime so that they take 5 minutes. However this is often not representative of performance and you need to run it for a couple of hours to get a good idea. A suggested
-timestep for this is 95780 * 0.1, which is 0.1ms (95780 = 1ms in normalised time).
 
 # Test cases
 ## Test 1
@@ -76,9 +72,6 @@ This test restarts from the baseline with x1.5 power and runs 10 output timestep
 Known performance on M. Kryjak's machine (see solver settings section):
  - SNES-1 settings: 5m 3s (~550 ms/24hrs) (Aug 2025)
  - SNES-MUMPS-1 settings: 4m 45s (Dec 2025)
-
-### Performance with SNES-MUMPS-1 (default)
-![Test 1 diagnostic output](mon_test1.png)
 
 ## Test 2
 Based on the full, unsimplified version of Test 1. It's a lot more computationally intensive than Test 1 
@@ -95,18 +88,23 @@ Known performance on M. Kryjak's machine (short):
  - SNES-STRUMPACK-2 settings: 45s  (Sept 2025)
  - SNES-MUMPS-1 settings: 1m 42s (Dec 2025)
 
-### Performance with SNES-MUMPS-1 (default)
-![Test 2 diagnostic output](mon_test2.png)
-
-
-## Test 2long
+### Test 2long
 Same as test 3 but ran for 3ms, which is short enough to be quick to run using good recipes but long enough to capture both the initial transient and a bit of the steady state.
 
 Known performance on M. Kryjak's machine (short):
  - SNES-MUMPS-1 settings: 7m 1s (Dec 2025)
 
- ### Performance with SNES-MUMPS-1 (default)
-![Test 2long diagnostic output](mon_test2long.png)
+### Test 2scratch
+Ran from scratch for 45ms.
+Default recipe: SNES-MUMPS-1 
+
+### Test 2stiff
+Restarted from test2scratch at 2ms, when the simulation is stiffer.
+Default recipe: SNES-MUMPS-1
+
+### Test 2steady
+Restarted from test2scratch at 10ms, when the simulation is more steady.
+Default recipe: SNES-MUMPS-1
 
 ## Test 3
 Based on DIII-D. Relevant to M. Tsagkiridis' project. It's a very challenging
@@ -116,8 +114,42 @@ Known performance on M. Kryjak's machine:
  - SNES-1 settings: 3m 11s  (~8 ms/24hrs) (Sept 2025)
  - SNES-MUMPS-1 settings: 26s (Dec 2025)
 
-### Performance with SNES-MUMPS-1 (default)
-![Test 3 diagnostic output](mon_test3.png)
+## Test 4scratch
+Full resolution ST40 simulation (similar to Test 2, but 4x higher res). 
+It's a low density, high temperature case, almost sheath limited.
+Original case name: st40fl2-master_scratch
+Original grid name: g4bf1-fine_nonorth_xpoint_guards_allfields.nc
+
+Ran for 45ms from scratch.
+Default recipe: SNES-MUMPS-1
+
+### Test 4stiff
+Restarted from test4scratch at 2ms, when the simulation is very stiff.
+Runs for 30 output steps to get 1ms.
+Default recipe: SNES-MUMPS-1
+
+### Test 4steady
+Restarted from test4scratch at 10ms, when the simulation is more steady.
+Runs for 90 output steps to get 0.9ms.
+Default recipe: SNES-MUMPS-1
+
+## Test 5scratch
+Low resolution MAST-U simulation. Runs OK on CVODE but very slow on MUMPS.
+Full resolution is extremely slow on CVODE (~2ms/24hrs, not included as test).
+Original case name: test5ref-m2ul3a-from_lin_260519_master_scratch_cvode
+Original grid: CDN_46895_lowresol_260519_nowallpump_1e21.nc
+Runs for 45ms from scratch. 
+Default recipe: CVODE-1
+
+### Test 5stiff
+Restarted from test5scratch at 10ms, when the simulation is more steady.
+Runs for 30 output steps to get 0.015ms.
+Default recipe: CVODE-1
+
+### Test 5steady
+Restarted from test5scratch at 10ms, when the simulation is more steady.
+Runs for 50 output steps to get 0.5ms.
+Default recipe: CVODE-1
 
 ## PETSc configuration
 To enable STRUMPACK, use the following configure flags for PETSc:
@@ -159,244 +191,3 @@ make PETSC_DIR=$PWD PETSC_ARCH=arch-linux-c-opt all
 
 Note that you will need to have `flex` and `bison` installed for `ptscotch` which is a STRUMPACK dependency. These are additional to the usual dependency list in the Hermes-3 documentation
 
-# Solver settings
-
-## CVODE-1
-Standard CVODE settings:
-
-```
-[solver]
-mxstep = 1e9
-cvode_max_order = 3
-maxl = 5
-atol = 1e-12 * 1
-rtol = 1e-6 * 1
-use_precon = True
-diagnose = false
-```
-
-## SNES-1
-Settings using the latest Hypre ILU (needs PETSc >=3.23.3) with Malamas Tsagkiridis' PID timestepper:
-
-```
-[solver]
-diagnose = true
-type = snes                      # Backward Euler steady-state solver
-snes_type = newtonls             # Nonlinear solver
-ksp_type = gmres                 # Linear solver: gmres, cg
-max_nonlinear_iterations = 16    # default: 50
-pc_type = hypre                  # Preconditioner type
-pc_hypre_type = ilu         
-lag_jacobian = 7                 # Iterations between jacobian recalculations. default: 50
-atol = 1e-12                      # Absolute tolerance
-rtol = 1e-6                      # Relative tolerance
-stol = 1e-12
-maxf = 20000
-maxl = 260
-pid_controller = true
-target_its = 5
-kP = 0.65
-kI = 0.30
-kD = 0.15
-matrix_free_operator = true
-timestep = 0.001                 # Initial timestep
-
-[petsc]
-
-#log_view = true
-                                    
-pc_hypre_ilu_level = 1                            # k = 2  (default is 0, try 1 and 2)
-pc_hypre_ilu_local_reordering = true              # reduces fill / improves robustness
-pc_hypre_ilu_tri_solve = true                     # use triangular solve instead of smoothing
-pc_hypre_ilu_print_level = true
-snes_fd_color_use_mat = true
-```
-
-## SNES-STRUMPACK-1
-Example STRUMPACK settings with STRUMPACK as direct solver:
-
-```
-[solver]
-diagnose = true
-type = snes                     # Backward Euler steady-state solver
-snes_type = newtonls            # Nonlinear solver
-ksp_type = preonly              # Linear solver
-use_precon = false
-max_nonlinear_iterations = 15   # default: 50
-pc_type = lu                    # Preconditioner type
-lag_jacobian = 500              # Iterations between jacobian recalculations. default: 50
-atol = 1e-12                    # Absolute tolerance
-rtol = 1e-6                     # Relative tolerance
-stol = 1e-12
-maxl = 20                       # default: 20
-use_coloring = true
-matrix_free_operator = true
-
-[petsc]
-pc_factor_mat_solver_type = strumpack
-mat_strumpack_verbose = true
-```
-
-## SNES-STRUMPACK-3
-STRUMPACK settings from M. Kryjak's optimisation. Here it's used as a direct solver.
-
-```
-[solver]
-diagnose = true
-type = snes
-snes_type = newtonls   # newtontr not as good
-ksp_type = preonly
-pc_type = lu
-max_nonlinear_iterations = 16
-atol = 4e-8
-rtol = 1e-6
-stol = 0
-maxf = 2000
-maxl = 260
-matrix_free_operator = false
-lag_jacobian = 1
-timestep = 0.001
-
-pid_controller = true
-target_its = 3
-kP = 0.65   # 0.65
-kI = 0.3 # 0.30
-kD = 0.15 # 0.15
-# min_tstep_decrease = 0.5
-# max_tstep_increase = 1.2
-
-[petsc]
-
-# STRUMPACK as factorization backend for ILU/LU
-pc_factor_mat_solver_type = strumpack
-
-mat_strumpack_reordering = metis  # try amd/rcm if needed
-mat_strumpack_colperm = true      # allow column permutation for nonzero diagonal
-pc_factor_shift_type = NONZERO
-pc_factor_shift_amount = 1e-12
-
-```
-
-## SNES-MUMPS-1
-MUMPS settings from H. Al Daas' optimisation on 13/09/25.
-Best performance as of 16/09/25.
-
-```
-[solver]
-diagnose = true
-type = snes
-snes_type = newtonls   # newtontr not as good
-ksp_type = fgmres
-pc_type = lu
-max_nonlinear_iterations = 10
-atol = 1e-7
-rtol = 1e-6
-stol = 1e-12
-maxf = 2000
-maxl = 260
-matrix_free_operator = false
-lag_jacobian = 1
-timestep = 0.1
- 
-pid_controller = true
-target_its = 100
-kP = 0.233   # 0.65
-kI = 0.133 # 0.30
-kD = 0.0 # 0.15
-# min_tstep_decrease = 0.5
-# max_tstep_increase = 1.2
- 
-[petsc]
-#snes_monitor
-#snes_converged_reason
-#ksp_converged_reason
-log_view
-snes_fd_color_use_mat
-ksp_type = fgmres
-pc_type = lu
-pc_factor_mat_solver_type = mumps
-snes_linesearch_type = basic
-
-```
-
-## TS-PSEUDO-1
-Experimental, initial pseudo timestep settings
-
-```
-[solver]
-diagnose = true
-pseudo_time_stepping = true
-type = petsc
-max_nonlinear_iterations = 16
-atol = 4e-8
-rtol = 1e-6
-matrix_free_operator = false
-# lag_jacobian = 1
-start_timestep = 1e-6
-use_jacobian = true
-interpolate = false
-
-
-[petsc]
-ts_type = pseudo
-ts_pseudo_monitor = true
-# ts_monitor = true
-log_view = true
-
-snes_type = newtonls   # newtontr not as good
-# snes_monitor_short = true
-snes_rtol = 1e-6
-snes_atol = 4e-8
-ts_max_reject = 50
-ts_max_steps = 1000
-
-ts_adapt_type = basic
-
-ksp_type = fgmres
-pc_type = lu
-# ksp_monitor_short = true
-pc_monitor = true
-```
-
-## SNES-PTC-1
-
-Pseudo-Transient Continuation (PTC) with SNES solver.  Timestep varies
-by cell so the output timestep is the minimum over the whole domain.
-
-
-
-```
-[solver]
-diagnose = true
-type = snes
-equation_form = pseudo_transient    # Enable pseudo-time stepping
-
-pid_controller = true   # Use PID controller to scale all timesteps based on solver convergence
-target_its = 4         # Target number of nonlinear iterations
-kP = 0.233
-kI = 0.133
-kD = 0.0
-
-snes_type = newtonls
-ksp_type = fgmres
-pc_type = lu
-max_nonlinear_iterations = 20   # Limit significantly above target_its to limit failures
-atol = 1e-7
-rtol = 1e-6
-stol = 1e-12
-maxf = 200
-maxl = 20
-
-matrix_free_operator = true   # Use the actual nonlinear function for the matrix-vector product
-
-lag_jacobian = 5   # With pid_controller=true the Jacobian will be recalculated every timestep
-timestep = 0.1       # Starting internal timestep
-
-dt_min_reset = 1e-10
-
-[petsc]
-ksp_type = fgmres
-pc_type = lu
-pc_factor_mat_solver_type = strumpack
-snes_linesearch_type = basic
-```

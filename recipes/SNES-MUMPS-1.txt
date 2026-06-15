@@ -1,0 +1,38 @@
+# SNES-MUMPS-1
+# MUMPS settings from H. Al Daas' optimisation on 13/09/25.
+# Best performance as of 16/09/25.
+
+[solver]
+diagnose = true
+type = snes
+snes_type = newtonls   # newtontr not as good
+ksp_type = fgmres
+pc_type = lu
+max_nonlinear_iterations = 10
+atol = 1e-7
+rtol = 1e-6
+stol = 1e-12
+maxf = 2000
+maxl = 260
+matrix_free_operator = false
+lag_jacobian = 1
+timestep = 0.1
+
+pid_controller = true
+target_its = 100
+kP = 0.233   # 0.65
+kI = 0.133 # 0.30
+kD = 0.0 # 0.15
+# min_tstep_decrease = 0.5
+# max_tstep_increase = 1.2
+
+[petsc]
+#snes_monitor
+#snes_converged_reason
+#ksp_converged_reason
+log_view
+snes_fd_color_use_mat
+ksp_type = fgmres
+pc_type = lu
+pc_factor_mat_solver_type = mumps
+snes_linesearch_type = basic
