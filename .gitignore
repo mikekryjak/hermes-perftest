@@ -1,3 +1,5 @@
 BOUT.log.*
 .BOUT.pid*
 BOUT.dmp*
+BOUT.squash*
+*.pyc
