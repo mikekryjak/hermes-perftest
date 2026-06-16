@@ -1,3 +1,5 @@
+# Best recipe from Malamas as of 15/06/2026
+
 [solver]
 type = snes                     # Backward Euler steady-state solver
 snes_type = newtonls            # Nonlinear solver

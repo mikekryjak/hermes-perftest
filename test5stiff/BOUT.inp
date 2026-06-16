@@ -1,4 +1,4 @@
-nout = 30            # number of writes
+nout = 20            # number of writes
 timestep = 95780 * 0.01          # 9578 is 1/10 of a milisecond
 
 MZ = 1                  # points in z

@@ -1,29 +1,29 @@
 IncIntShear = false		# type: bool, source: default
 MXG = 2		# type: int, doc: Number of guard cells on each side in X, source: default
 MYG = 2		# type: int, doc: Number of guard cells on each side in Y, source: default
-MZ = 1		# type: int, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-NXPE = 1		# type: int, doc: Decomposition in the radial direction. If not given then calculated automatically., source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+MZ = 1		# type: int, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+NXPE = 1		# type: int, doc: Decomposition in the radial direction. If not given then calculated automatically., source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 ZMAX = 1		# type: BoutReal, source: default
 ZMIN = 0		# type: BoutReal, source: default
 append = false		# type: bool, doc: Add new outputs to the end of existing files? If false, overwrite files., source: default
 async_send = false		# type: bool, doc: Whether to use asyncronous MPI sends, source: default
-core_ne = 7e19 / hermes:Nnorm		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-core_pe = core_ne * core_te		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-core_pi = core_ne * core_ti		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-core_te = 1500 / tnorm_setting		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-core_ti = 1500 / tnorm_setting		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-datadir = /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c		# type: string, source: Command line
+core_ne = 7e19 / hermes:Nnorm		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+core_pe = core_ne * core_te		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+core_pi = core_ne * core_ti		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+core_te = 1500 / tnorm_setting		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+core_ti = 1500 / tnorm_setting		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+datadir = /home/mike/work/cases/perftests/hermes-perftest/test2steady		# type: string, source: Command line
 dump_on_restart = true		# type: bool, doc: Write initial state as time point 0?, source: default
 format = ""		# type: string, source: default
 grid = ""		# type: string, source: default
-initial_ne = core_ne * 1		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-initial_pe = initial_te * initial_ne		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-initial_pi = initial_ti * initial_ne		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-initial_te = core_te * 0.1		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-initial_ti = core_ti * 0.1		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+initial_ne = core_ne * 1		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+initial_pe = initial_te * initial_ne		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+initial_pi = initial_ti * initial_ne		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+initial_te = core_te * 0.1		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+initial_ti = core_ti * 0.1		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 json_database_dir = /home/mike/work/hermes-3/json_database		# type: string, doc: Path to directory containing reaction data json files., source: default
 non_uniform = true		# type: bool, source: default
-nout = 30		# type: int, doc: Number of output steps, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+nout = 50		# type: int, doc: Number of output steps, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 nz = 1		# type: int, source: default
 optionfile = BOUT.inp		# type: string, source: default
 periodicX = false		# type: bool, doc: Make grid periodic in X?, source: default
@@ -31,19 +31,19 @@ restart = true		# type: bool, doc: Load state from restart files?, source: Comma
 settingsfile = BOUT.settings		# type: string, source: default
 stopCheck = false		# type: bool, doc: Check if a file exists, and exit if it does., source: default
 stopCheckName = BOUT.stop		# type: string, doc: Name of file whose existence triggers a stop, source: default
-timestep = 95788 * 0.1		# type: BoutReal, doc: Output time step size, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-tnorm_setting = 100		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+timestep = 95788 * 0.1		# type: BoutReal, doc: Output time step size, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+tnorm_setting = 100		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 twistshift = false		# type: bool, doc: Apply a Twist-Shift boundary using ShiftAngle?, source: default
 wall_limit = -1		# type: BoutReal, doc: Wall time limit in hours. By default (< 0), no limit, source: default
 
 [DnnNnd]
-bndry_all = neumann		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [DnnPnd]
-bndry_all = neumann		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [DnnTnd]
-bndry_all = neumann		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_all = neumann		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [Dnnd]
 bndry_all = neumann		# type: string
@@ -57,17 +57,17 @@ evolve_bndry = false		# type: bool, source: default
 
 [Nd]
 bndry_all = neumann		# type: string
-bndry_core = free_o3		# unused value (marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_sol = neumann		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_core = free_o3		# unused value (marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_sol = neumann		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_bndry = false		# type: bool, source: default
 source = <Field3D>		# type: Field3D, doc: Source term in ddt(Nd). Units [m^-3/s], source: default
 
 [Nd+]
-bndry_all = neumann		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_pf = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_all = neumann		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_pf = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_bndry = false		# type: bool, source: default
-function = initial_ne		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+function = initial_ne		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
 source = <Field3D>		# type: Field3D, doc: Source term in ddt(Nd+). Units [m^-3/s], source: default
 source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
@@ -75,28 +75,28 @@ source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, 
 
 [Pd]
 bndry_all = neumann		# type: string
-bndry_core = free_o3		# unused value (marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_sol = neumann		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_core = free_o3		# unused value (marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_sol = neumann		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_bndry = false		# type: bool, source: default
 source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pd). Units [N/m^2/s], source: default
 
 [Pd+]
-bndry_all = neumann		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_pf = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_all = neumann		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_pf = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_bndry = false		# type: bool, source: default
-function = initial_pi		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+function = initial_pi		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
 source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pd+). Units [Pa/s], note P = 2/3 E, source: default
 source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
 source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, source: default
 
 [Pe]
-bndry_all = neumann		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_pfr = decaylength(0.03 / hermes:rho_s0)		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_all = neumann		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_pfr = decaylength(0.03 / hermes:rho_s0)		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+bndry_sol = decaylength(0.03 / hermes:rho_s0)		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_bndry = false		# type: bool, source: default
-function = initial_pi		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+function = initial_pi		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 neumann_boundary_average_z = false		# type: bool, doc: Apply neumann boundary with Z average?, source: default
 source = <Field3D>		# type: Field3D, doc: Source term in ddt(Pe). Units [Pa/s], note P = 2/3 E, source: default
 source_only_in_core = false		# type: bool, doc: Zero the source outside the closed field-line region?, source: default
@@ -104,7 +104,7 @@ source_time_dependent = false		# type: bool, doc: Use a time-dependent source?, 
 
 [Td]
 bndry_all = neumann		# type: string
-bndry_sol = neumann		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+bndry_sol = neumann		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [all]
 bndry_all = dirichlet		# type: string, source: default
@@ -113,14 +113,14 @@ function = 0.0		# type: string, source: default
 scale = 1		# type: BoutReal, source: default
 
 [braginskii_collisions]
-diagnose = true		# type: bool, doc: Output additional diagnostics?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 ei_multiplier = 1		# type: BoutReal, doc: User-set arbitrary multiplier on electron-ion collision rate, source: default
-electron_electron = true		# type: bool, doc: Include electron-electron collisions?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-electron_ion = true		# type: bool, doc: Include electron-ion collisions?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-electron_neutral = false		# type: bool, doc: Include electron-neutral elastic collisions?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-ion_ion = true		# type: bool, doc: Include ion-ion elastic collisions?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-ion_neutral = false		# type: bool, doc: Include ion-neutral elastic collisions?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-neutral_neutral = false		# type: bool, doc: Include neutral-neutral elastic collisions?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+electron_electron = true		# type: bool, doc: Include electron-electron collisions?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+electron_ion = true		# type: bool, doc: Include electron-ion collisions?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+electron_neutral = false		# type: bool, doc: Include electron-neutral elastic collisions?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+ion_ion = true		# type: bool, doc: Include ion-ion elastic collisions?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+ion_neutral = false		# type: bool, doc: Include ion-neutral elastic collisions?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+neutral_neutral = false		# type: bool, doc: Include neutral-neutral elastic collisions?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [braginskii_friction]
 diagnose = false		# type: bool, doc: Output additional diagnostics?, source: default
@@ -130,7 +130,7 @@ frictional_heating = true		# type: bool, doc: Include R dot v heating term as en
 diagnose = false		# type: bool, doc: Output additional diagnostics?, source: default
 
 [d]
-AA = 2		# type: BoutReal, doc: Particle atomic mass. Proton = 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+AA = 2		# type: BoutReal, doc: Particle atomic mass. Proton = 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 K_cx_multiplier = 1		# type: BoutReal, doc: Scale the charge exchange rate by this factor, source: default
 K_iz_multiplier = 1		# type: BoutReal, doc: Scale the ionisation rate by this factor, source: default
 K_rec_multiplier = 1		# type: BoutReal, doc: Scale the recombination rate by this factor, source: default
@@ -138,41 +138,41 @@ R_ex_multiplier = 1		# type: BoutReal, doc: Scale the ionisation excitation/de-e
 R_rec_multiplier = 1		# type: BoutReal, doc: Scale the recombination radiation (incl. 3 body) rate by this factor, source: default
 collisionality_override = -1		# type: BoutReal, doc: Paramter for overriding the neutral collision frequency in Dn for testing, source: default
 density_floor = 1e-08		# type: BoutReal, doc: A minimum density used when dividing NVn by Nn. Normalised units., source: default
-diagnose = true		# type: bool, doc: Save additional diagnostics?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-diagnose_eqns = true		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-diffusion_collisions_mode = afn		# type: string, doc: Can be multispecies: all enabled collisions excl. IZ, or afn: CX, IZ and NN collisions, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+diagnose = true		# type: bool, doc: Save additional diagnostics?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+diagnose_eqns = true		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+diffusion_collisions_mode = afn		# type: string, doc: Can be multispecies: all enabled collisions excl. IZ, or afn: CX, IZ and NN collisions, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 diffusion_limit = -1		# type: BoutReal, doc: Upper limit on diffusion coefficient [m^2/s]. <0 means off, source: default
 evolve_momentum = true		# type: bool, doc: Evolve parallel neutral momentum?, source: default
-flux_limit = true		# type: BoutReal, doc: Limit diffusive fluxes to fraction of thermal speed. <0 means off., source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+flux_limit = true		# type: BoutReal, doc: Limit diffusive fluxes to fraction of thermal speed. <0 means off., source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 freeze_low_density = false		# type: bool, doc: Freeze evolution in low density regions?, source: default
-heat_flux_limit_alpha = 0.25		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+heat_flux_limit_alpha = 0.25		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 lax_flux = true		# type: bool, doc: Enable stabilising lax flux?, source: default
-maximum_mfp = 1.0		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-neutral_boundary_lower_y = true		# type: bool, doc: Boundary on lower y?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-neutral_boundary_pfr = true		# type: bool, doc: Boundary on PFR?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-neutral_boundary_sol = true		# type: bool, doc: Boundary on SOL?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-neutral_boundary_upper_y = true		# type: bool, doc: Boundary on upper y?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+maximum_mfp = 1.0		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+neutral_boundary_lower_y = true		# type: bool, doc: Boundary on lower y?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+neutral_boundary_pfr = true		# type: bool, doc: Boundary on PFR?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+neutral_boundary_sol = true		# type: bool, doc: Boundary on SOL?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+neutral_boundary_upper_y = true		# type: bool, doc: Boundary on upper y?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 neutral_conduction = true		# type: bool, doc: Include neutral gas heat conduction?, source: default
 neutral_viscosity = true		# type: bool, doc: Include neutral gas viscosity?, source: default
-nn_floor = 1e-8		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+nn_floor = 1e-8		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 nonorthogonal_operators = false		# type: bool, doc: Use nonorthogonal operators for radial transport? NOTE: may be broken, source: default
 normalise_sources = true		# type: bool, doc: Normalise input sources?, source: default
-output_ddt = true		# type: bool, doc: Save derivatives to output?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-perp_operator = 2		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-perp_pressure_form = 1		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pfr_energy_refl_factor = 0.67		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at PFR, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pfr_fast_refl_fraction = 0.70		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the pfr, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pn_floor = 1e-8		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-precondition = true		# type: bool, doc: Enable preconditioning in neutral model?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+output_ddt = true		# type: bool, doc: Save derivatives to output?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+perp_operator = 2		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+perp_pressure_form = 1		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pfr_energy_refl_factor = 0.67		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at PFR, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pfr_fast_refl_fraction = 0.70		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the pfr, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pn_floor = 1e-8		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+precondition = true		# type: bool, doc: Enable preconditioning in neutral model?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 sheath_ydown = true		# type: bool, doc: Enable wall boundary conditions at ydown, source: default
 sheath_yup = true		# type: bool, doc: Enable wall boundary conditions at yup, source: default
-sol_energy_refl_factor = 0.67		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at SOL, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-sol_fast_refl_fraction = 0.70		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the sol, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_energy_refl_factor = 0.70		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at target, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_fast_refl_fraction = 0.80		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the target, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+sol_energy_refl_factor = 0.67		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at SOL, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+sol_fast_refl_fraction = 0.70		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the sol, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_energy_refl_factor = 0.70		# type: BoutReal, doc: Fraction of energy retained by neutral particles after wall reflection at target, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_fast_refl_fraction = 0.80		# type: BoutReal, doc: Fraction of neutrals that are undergoing fast reflection at the target, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
-type = neutral_mixed, neutral_boundary		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-upwind_perp_diffusion = true		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+type = neutral_mixed, neutral_boundary		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+upwind_perp_diffusion = true		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [d:precon_laplace]
 all_terms = true		# type: bool, doc: Include first derivative terms?, source: default
@@ -191,70 +191,70 @@ outer_boundary_flags = 0		# type: int, doc: Flags to set outer boundary conditio
 type = cyclic		# type: string, source: default
 
 [d+]
-AA = 2		# doc: Particle atomic mass. Proton = 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+AA = 2		# doc: Particle atomic mass. Proton = 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 anomalous_D = <Field2D>		# type: Field2D, doc: Anomalous particle diffusion coefficient [m^2/s], source: default
 anomalous_chi = <Field2D>		# type: Field2D, doc: Anomalous thermal diffusion coefficient [m^2/s], source: default
-anomalous_nu = 0.2		# type: Field2D, doc: Anomalous momentum diffusion coefficient [m^2/s], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+anomalous_nu = 0.2		# type: Field2D, doc: Anomalous momentum diffusion coefficient [m^2/s], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 anomalous_sheath_flux = false		# type: bool, doc: Allow anomalous diffusion into sheath?, source: default
 bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
-charge = 1		# doc: Particle charge. electrons = -1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-conduction_collisions_mode = braginskii		# type: string, doc: Can be multispecies: all collisions, or braginskii: self collisions and ie, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+charge = 1		# doc: Particle charge. electrons = -1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+conduction_collisions_mode = braginskii		# type: string, doc: Can be multispecies: all collisions, or braginskii: self collisions and ie, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 damp_p_nt = false		# type: bool, doc: Damp P - N*T? Active when P < 0 or N < density_floor, source: default
 density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
-diagnose = true		# type: bool, doc: Save additional diagnostics?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+diagnose = true		# type: bool, doc: Save additional diagnostics?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
 fix_momentum_boundary_flux = false		# type: bool, doc: Fix Y boundary momentum flux to boundary midpoint value?, source: default
 hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
 hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
 kappa_coefficient = 3.9		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
-kappa_limit_alpha = -1		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+kappa_limit_alpha = -1		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
 low_n_diffuse = false		# type: bool, doc: Parallel diffusion at low density, source: default
 low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
 low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
-neutral_pump = true		# type: bool, doc: Neutral pump enabled? Note, need location in grid file, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+neutral_pump = true		# type: bool, doc: Neutral pump enabled? Note, need location in grid file, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 numerical_viscous_heating = false		# type: bool, doc: Include heating due to numerical viscosity?, source: default
 p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Grad(p) form, source: default
 pfr_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at pfr, source: default
 pfr_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at pfr, source: default
-pfr_recycle = true		# type: bool, doc: Recycling in the PFR edge?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pfr_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at pfr [eV], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pfr_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the pfr recycled flux by this factor. Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+pfr_recycle = true		# type: bool, doc: Recycling in the PFR edge?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pfr_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at pfr [eV], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pfr_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the pfr recycled flux by this factor. Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
 precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: default
-pump_recycle_multiplier = 0.968		# type: BoutReal, doc: Multiply the pump boundary recycling flux by this factor (like albedo). Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-recycle_as = d		# doc: Name of the species to recycle into, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+pump_recycle_multiplier = 0.968		# type: BoutReal, doc: Multiply the pump boundary recycling flux by this factor (like albedo). Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+recycle_as = d		# doc: Name of the species to recycle into, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 sol_fast_recycle_energy_factor = 0		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at sol, source: default
 sol_fast_recycle_fraction = 0		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at sol, source: default
-sol_recycle = true		# type: bool, doc: Recycling in the SOL edge?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-sol_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at sol [eV], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-sol_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the sol recycled flux by this factor. Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_fast_recycle_energy_factor = 0.48		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at target, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_fast_recycle_fraction = 0.80		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at target, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_recycle = true		# type: bool, doc: Recycling in the targets?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at target [eV], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the target recycled flux by this factor. Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+sol_recycle = true		# type: bool, doc: Recycling in the SOL edge?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+sol_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at sol [eV], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+sol_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the sol recycled flux by this factor. Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_fast_recycle_energy_factor = 0.48		# type: BoutReal, doc: Fraction of energy retained by fast recycled neutrals at target, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_fast_recycle_fraction = 0.80		# type: BoutReal, doc: Fraction of ions undergoing fast reflection at target, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_recycle = true		# type: bool, doc: Recycling in the targets?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_recycle_energy = 3.5		# type: BoutReal, doc: Fixed energy of the recycled particles at target [eV], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_recycle_multiplier = 1		# type: BoutReal, doc: Multiply the target recycled flux by this factor. Should be >=0 and <= 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
-thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-type = evolve_density, evolve_momentum, evolve_pressure, anomalous_diffusion		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+type = evolve_density, evolve_momentum, evolve_pressure, anomalous_diffusion		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [e]
-AA = 1/1836		# doc: Particle atomic mass. Proton = 1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+AA = 1/1836		# doc: Particle atomic mass. Proton = 1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 anomalous_D = <Field2D>		# type: Field2D, doc: Anomalous particle diffusion coefficient [m^2/s], source: default
 anomalous_chi = <Field2D>		# type: Field2D, doc: Anomalous thermal diffusion coefficient [m^2/s], source: default
-anomalous_nu = 0.2		# type: Field2D, doc: Anomalous momentum diffusion coefficient [m^2/s], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+anomalous_nu = 0.2		# type: Field2D, doc: Anomalous momentum diffusion coefficient [m^2/s], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 anomalous_sheath_flux = false		# type: bool, doc: Allow anomalous diffusion into sheath?, source: default
 bndry_flux = true		# type: bool, doc: Allow flows through radial boundaries, source: default
-charge = -1		# doc: Particle charge. electrons = -1, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-conduction_collisions_mode = braginskii		# type: string, doc: Can be multispecies: all collisions, or braginskii: self collisions and ie, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+charge = -1		# doc: Particle charge. electrons = -1, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+conduction_collisions_mode = braginskii		# type: string, doc: Can be multispecies: all collisions, or braginskii: self collisions and ie, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 damp_p_nt = false		# type: bool, doc: Damp P - N*T? Active when P < 0 or N < density_floor, source: default
 density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
-diagnose = true		# type: bool, doc: Save additional output diagnostics, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+diagnose = true		# type: bool, doc: Save additional output diagnostics, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 evolve_log = false		# type: bool, doc: Evolve the logarithm of pressure?, source: default
 hyper_z = -1		# type: BoutReal, doc: Hyper-diffusion in Z, source: default
 hyper_z_T = -1		# type: BoutReal, doc: 4th-order dissipation of temperature, source: default
 kappa_coefficient = 2.23446		# type: BoutReal, doc: Numerical coefficient in parallel heat conduction. Default is 3.16/sqrt(2) for electrons, 2.5 for neutrals and 3.9 otherwise, source: default
-kappa_limit_alpha = 0.2		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+kappa_limit_alpha = 0.2		# type: BoutReal, doc: Flux limiter factor. < 0 means no limit. Typical is 0.2 for electrons, 1 for ions., source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 low_T_diffuse_perp = false		# type: bool, doc: Add cross-field diffusion at low temperature?, source: default
 low_n_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low density, source: default
 low_p_diffuse_perp = false		# type: bool, doc: Perpendicular diffusion at low pressure, source: default
@@ -263,8 +263,8 @@ p_div_v = false		# type: bool, doc: Use p*Div(v) form? Default, false => v * Gra
 poloidal_flows = true		# type: bool, doc: Include poloidal ExB flow, source: default
 precondition = true		# type: bool, doc: Enable preconditioner? (Note: solver may not use it), source: default
 temperature_floor = 0.1		# type: BoutReal, doc: Low temperature scale for low_T_diffuse_perp, source: default
-thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-type = quasineutral, evolve_pressure, zero_current, anomalous_diffusion		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+thermal_conduction = true		# type: bool, doc: Include parallel heat conduction?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+type = quasineutral, evolve_pressure, zero_current, anomalous_diffusion		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [electromagnetic:laplacian]
 atol_accept = 1e-06		# unused value (NOT marked conditionally used), type: BoutReal, source: user_default
@@ -276,93 +276,93 @@ type = naulin		# unused value (NOT marked conditionally used), type: string, sou
 diagnose = false		# type: bool, doc: Save additional output diagnostics, source: default
 
 [hermes]
-Bnorm = 1		# type: BoutReal, doc: Reference magnetic field [T], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-Cs0 = sqrt(qe * Tnorm / Mp)		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-Mp = 1.67262e-27		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-Nnorm = 1e17		# type: BoutReal, doc: Reference density [m^-3], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-Omega_ci = qe * Bnorm / Mp		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-Tnorm = tnorm_setting		# type: BoutReal, doc: Reference temperature [eV], source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-components = (d+, d, e,sheath_boundary_simple, braginskii_collisions, braginskii_friction,braginskii_heat_exchange, reactions, electron_force_balance,braginskii_conduction, recycling)		# doc: Components in order of execution, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+Bnorm = 1		# type: BoutReal, doc: Reference magnetic field [T], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+Cs0 = sqrt(qe * Tnorm / Mp)		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+Mp = 1.67262e-27		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+Nnorm = 1e17		# type: BoutReal, doc: Reference density [m^-3], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+Omega_ci = qe * Bnorm / Mp		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+Tnorm = tnorm_setting		# type: BoutReal, doc: Reference temperature [eV], source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+components = (d+, d, e,sheath_boundary_simple, braginskii_collisions, braginskii_friction,braginskii_heat_exchange, reactions, electron_force_balance,braginskii_conduction, recycling)		# doc: Components in order of execution, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 normalise_metric = true		# type: bool, doc: Normalise input metric tensor? (assumes input is in SI units), source: default
-qe = 1.60218e-19		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+qe = 1.60218e-19		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 recalculate_metric = false		# type: bool, doc: Load Rxy, Bpxy etc. to calculate an orthogonal metric?, source: default
 restarting = true		# unused value (marked conditionally used)
 revision = 44ce2e6c5e140820601533937426c141a294e65c		# unused value (marked conditionally used)
-rho_s0 = Cs0 / Omega_ci		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+rho_s0 = Cs0 / Omega_ci		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 slope_limiter = MC		# unused value (marked conditionally used)
 
 [input]
-error_on_unused_options = false		# type: bool, doc: Error if there are any unused options before starting the main simulation, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+error_on_unused_options = false		# type: bool, doc: Error if there are any unused options before starting the main simulation, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 max_recursion_depth = 0		# type: string, doc: Maximum recursion depth allowed in expressions. 0 = no recursion; -1 = unlimited, source: default
 transform_from_field_aligned = true		# type: string, source: default
 validate = false		# type: bool, doc: Check for unused options and stop, source: default
 
 [mesh]
-MXG = 2		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+MXG = 2		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 calcParallelSlices_on_communicate = false		# type: bool, doc: Calculate parallel slices on all communicated fields, source: user_default
 extrapolate_x = false		# type: bool, source: default
 extrapolate_y = false		# type: bool, source: default
-file = grid_test2.nc		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+file = grid_test2.nc		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 format = ""		# type: string, source: default
 include_corner_cells = true		# type: bool, doc: Communicate corner guard and boundary cells. Can be set to false if you are sure that you will not need these cells, for mixed derivatives D2DXDY (or anything else), for example if your grid has orthogonal x- and y-directions. This might slightly reduce communication time., source: default
 maxregionblocksize = 64		# type: int, doc: (Advanced) Sets the maximum size of continguous blocks when creating Regions, source: default
-nx = 40		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+nx = 40		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 staggergrids = false		# type: bool, doc: Enable staggered grids. By default, all variables are cell centred, source: default
 symmetricGlobalX = true		# type: bool, source: default
 symmetricGlobalY = true		# type: bool, source: default
 symmetricGlobalZ = false		# type: bool, source: default
 type = bout		# type: string, source: default
-x_index = x*(nx - 2 * MXG) - 0.5 + MXG		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-xsep_inner = 19		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+x_index = x*(nx - 2 * MXG) - 0.5 + MXG		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+xsep_inner = 19		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [mesh:ddz]
 fft_filter = 0		# type: BoutReal, source: default
 
 [mesh:paralleltransform]
-type = shifted		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+type = shifted		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [output]
 append = false		# type: bool, doc: Append to existing file?, source: user_default
 enabled = true		# type: bool, doc: Write output files, source: default
 flush_frequency = 1		# type: m, doc: How often to flush to disk, source: default
-path = /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c		# type: string, source: user_default
+path = /home/mike/work/cases/perftests/hermes-perftest/test2steady		# type: string, source: user_default
 prefix = BOUT.dmp		# type: string, source: user_default
 type = netcdf		# type: string, source: default
 
 [petsc]
-ksp_type = fgmres		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-log_view = true		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pc_factor_mat_solver_type = mumps		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-pc_type = lu		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-snes_fd_color_use_mat = true		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-snes_linesearch_type = basic		# source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+ksp_type = fgmres		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+log_view = true		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pc_factor_mat_solver_type = mumps		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+pc_type = lu		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+snes_fd_color_use_mat = true		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+snes_linesearch_type = basic		# source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [reactions]
 data_ids = H.4_2.1.5,H.4_2.1.8,H.2_3.1.8		# type: string, doc: Comma-separated list of data identifiers to use for each reaction string., source: default
 data_srcs = amjuel		# type: string, doc: Reaction data source type ('ADAS', 'Amjuel', etc.), either a single value for all reaction strings, or a comma-separated list with one entry per reaction string, source: default
-diagnose = true		# type: bool, doc: Output additional diagnostics?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+diagnose = true		# type: bool, doc: Output additional diagnostics?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 no_neutral_cx_mom_gain = false		# type: bool, doc: If true, ion momentum in neutral-ion CX is still lost, but not given to the neutrals, source: default
-type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,)		# doc: Comma-separated list of reaction strings, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+type = (d + e -> d+ + 2e,d+ + e -> d,d + d+ -> d+ + d,)		# doc: Comma-separated list of reaction strings, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [recycling]
 density_floor = 1e-07		# type: BoutReal, doc: Minimum density floor, source: default
-species = d+		# doc: Comma-separated list of species to recycle, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+species = d+		# doc: Comma-separated list of species to recycle, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 
 [restart_files]
 append = false		# type: bool, doc: Append to existing file?, source: user_default
 enabled = true		# type: bool, doc: Write restart files, source: default
-path = /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c		# type: string, source: user_default
+path = /home/mike/work/cases/perftests/hermes-perftest/test2steady		# type: string, source: user_default
 prefix = BOUT.restart		# type: string, source: user_default
 singleWriteFile = true		# unused value (NOT marked conditionally used), type: bool, source: user_default
 type = netcdf		# type: string, source: default
 
 [run]
-finished = Mon Jun 15 17:14:46 2026
+finished = Tue Jun 16 10:13:58 2026
 		# unused value (NOT marked conditionally used), source: Output
 revision = 8218f71a2fe495bc138c7ddf7c33bb1be9837525		# unused value (NOT marked conditionally used), source: Output
-run_id = 2c69f03b-7e54-479e-ab85-b62ae25fc534		# unused value (NOT marked conditionally used), source: Output
+run_id = beb514a2-0d58-4f98-98a7-123a59ca6d36		# unused value (NOT marked conditionally used), source: Output
 run_restart_from = a488571b-17a5-48a3-b61e-8ab5d705896a		# unused value (NOT marked conditionally used), source: Output
-started = Mon Jun 15 17:10:31 2026
+started = Tue Jun 16 10:07:41 2026
 		# unused value (NOT marked conditionally used), source: Output
 version = 5.2.1		# unused value (NOT marked conditionally used), source: Output
 
@@ -370,8 +370,8 @@ version = 5.2.1		# unused value (NOT marked conditionally used), source: Output
 always_set_phi = false		# type: bool, doc: Always set phi field? Default is to only modify if already set, source: default
 density_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
 diagnose = false		# type: bool, doc: Save additional output diagnostics, source: default
-gamma_e = 4.5		# type: BoutReal, doc: Electron sheath heat transmission coefficient, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-gamma_i = 2.5		# type: BoutReal, doc: Ion sheath heat transmission coefficient, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+gamma_e = 4.5		# type: BoutReal, doc: Electron sheath heat transmission coefficient, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+gamma_i = 2.5		# type: BoutReal, doc: Ion sheath heat transmission coefficient, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 lower_y = true		# type: bool, doc: Boundary on lower y?, source: default
 no_flow = false		# type: bool, doc: Set zero particle flow, keeping energy flow, source: default
 pressure_boundary_mode = 1		# type: BoutReal, doc: BC mode: 0=LimitFree, 1=ExponentialFree, 2=LinearFree, source: default
@@ -384,41 +384,41 @@ wall_potential = <Field3D>		# type: Field3D, doc: Voltage of the wall [Volts], s
 
 [solver]
 asinh_vars = false		# type: bool, doc: Apply asinh() to all variables?, source: default
-atol = 1e-7		# type: BoutReal, doc: Absolute tolerance in SNES solve, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-diagnose = true		# type: bool, doc: Print additional diagnostics, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+atol = 1e-7		# type: BoutReal, doc: Absolute tolerance in SNES solve, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+diagnose = true		# type: bool, doc: Print additional diagnostics, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 diagnose_failures = false		# type: bool, doc: Print more diagnostics when SNES fails, source: default
 dt_min_reset = 1e-06		# type: BoutReal, doc: If dt falls below this, reset to starting dt, source: default
 equation_form = rearranged_backward_euler		# type: 20BoutSnesEquationForm, doc: Form of equation to solve: rearranged_backward_euler (default); pseudo_transient; backward_euler; direct_newton, source: default
 force_symmetric_coloring = false		# type: bool, doc: Modifies coloring matrix to force it to be symmetric, source: default
 is_nonsplit_model_diffusive = true		# type: bool, doc: If not a split operator, treat RHS as diffusive?, source: default
 jacobian_persists = false		# type: bool, doc: Re-use Jacobian and preconditioner across nonlinear solves, source: default
-kD = 0.0		# type: BoutReal, doc: Derivative PID parameter, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-kI = 0.133		# type: BoutReal, doc: Integral PID parameter, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-kP = 0.233		# type: BoutReal, doc: Proportional PID parameter, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-ksp_type = fgmres		# type: string, doc: Linear solver type. By default let PETSc decide (gmres), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+kD = 0.0		# type: BoutReal, doc: Derivative PID parameter, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+kI = 0.133		# type: BoutReal, doc: Integral PID parameter, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+kP = 0.233		# type: BoutReal, doc: Proportional PID parameter, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+ksp_type = fgmres		# type: string, doc: Linear solver type. By default let PETSc decide (gmres), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 kspsetinitialguessnonzero = false		# type: bool, doc: Set the initial guess to be non-zero, source: default
-lag_jacobian = 1		# type: int, doc: Re-use the Jacobian this number of SNES iterations, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+lag_jacobian = 1		# type: int, doc: Re-use the Jacobian this number of SNES iterations, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 last_failure_weight = 0.1		# type: BoutReal, doc: Weighting of last timestep in recent failure rate, source: default
 line_search_type = default		# type: string, doc: Line search type: basic, bt, l2, cp, nleqerr, source: default
 lower_its = 5		# type: int, doc: Iterations below which the next timestep is increased, source: default
 matrix_free = false		# type: bool, doc: Use matrix free Jacobian?, source: default
-matrix_free_operator = false		# type: bool, doc: Use matrix free Jacobian-vector operator?, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-max_nonlinear_iterations = 10		# type: int, doc: Maximum number of nonlinear iterations per SNES solve, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+matrix_free_operator = false		# type: bool, doc: Use matrix free Jacobian-vector operator?, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+max_nonlinear_iterations = 10		# type: int, doc: Maximum number of nonlinear iterations per SNES solve, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 max_snes_failures = 10		# type: int, doc: Abort after this number of consecutive failures, source: default
 max_timestep = 1e+37		# type: BoutReal, doc: Maximum timestep, source: default
-maxf = 2000		# type: int, doc: Maximum number of function evaluations per SNES solve, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-maxl = 260		# type: int, doc: Maximum number of linear iterations, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+maxf = 2000		# type: int, doc: Maximum number of function evaluations per SNES solve, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+maxl = 260		# type: int, doc: Maximum number of linear iterations, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 mms = false		# type: bool, doc: Use Method of Manufactured Solutions to track error scaling, source: default
 mms_initialise = false		# type: bool, doc: Use MMS solution for field initial conditions, source: default
 monitor_timestep = false		# type: bool, doc: Call monitors on internal timesteps, source: default
-nout = 30		# type: int, doc: Number of output steps. Overrides global setting., source: default
+nout = 50		# type: int, doc: Number of output steps. Overrides global setting., source: default
 output_residual_ratio = 0.5		# type: BoutReal, doc: Trigger an output when residual falls by this ratio, source: default
 output_step = 9578.8		# type: BoutReal, doc: Output time step size. Overrides global 'timestep' setting., source: default
 output_trigger = fixed_time_interval		# type: 14BoutSnesOutput, doc: Decides when to save outputs. fixed_time_interval, residual_ratio, source: default
 pc_hypre_type = pilut		# type: string, doc: hypre preconditioner type: euclid, pilut, parasails, boomeramg, ams, ads, source: default
-pc_type = lu		# type: string, doc: Preconditioner type. By default lets PETSc decide (ilu or bjacobi), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+pc_type = lu		# type: string, doc: Preconditioner type. By default lets PETSc decide (ilu or bjacobi), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 pid_consider_failures = false		# type: bool, doc: Reduce timestep increases if recent solves have failed, source: default
-pid_controller = true		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+pid_controller = true		# unused value (NOT marked conditionally used), source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 predictor = true		# type: bool, doc: Use linear predictor?, source: default
 prune_abstol = 1e-16		# type: BoutReal, doc: Prune values with absolute values smaller than this, source: default
 prune_fraction = 0.2		# type: BoutReal, doc: Prune if fraction of small elements is larger than this, source: default
@@ -428,20 +428,20 @@ pseudo_growth_factor = 1.1		# type: BoutReal, doc: PTC growth factor on success,
 pseudo_max_ratio = 2		# type: BoutReal, doc: PTC maximum timestep ratio between neighbors, source: default
 pseudo_reduction_factor = 0.5		# type: BoutReal, doc: PTC reduction factor on failure, source: default
 pseudo_strategy = inverse_residual		# type: 15BoutPTCStrategy, doc: PTC strategy to use when setting timesteps, source: default
-rtol = 1e-6		# type: BoutReal, doc: Relative tolerance in SNES solve, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+rtol = 1e-6		# type: BoutReal, doc: Relative tolerance in SNES solve, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 save_repeat_run_id = false		# type: bool, doc: Write run_id and run_restart_from at every output timestep, to make it easier to concatenate output data sets in time, source: default
 scale_rhs = false		# type: bool, doc: Scale time derivatives (Jacobian row scaling)?, source: default
 scale_vars = false		# type: bool, doc: Scale variables (Jacobian column scaling)?, source: default
-snes_type = newtonls		# type: string, doc: PETSc nonlinear solver method to use, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-stol = 1e-12		# type: BoutReal, doc: Convergence tolerance in terms of the norm of the change in the solution between steps, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-target_its = 100		# type: int, doc: Target snes iterations, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
-timestep = 0.1		# type: BoutReal, doc: Initial backward Euler timestep, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+snes_type = newtonls		# type: string, doc: PETSc nonlinear solver method to use, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+stol = 1e-12		# type: BoutReal, doc: Convergence tolerance in terms of the norm of the change in the solution between steps, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+target_its = 100		# type: int, doc: Target snes iterations, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
+timestep = 0.1		# type: BoutReal, doc: Initial backward Euler timestep, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 timestep_control = pid_nonlinear_its		# type: 16BoutSnesTimestep, doc: Timestep control method, source: default
 timestep_factor = 1.1		# type: BoutReal, doc: When timestep_control=residual_ratio, multiply timestep by this factor each step, source: default
 timestep_factor_on_failure = 0.5		# type: BoutReal, doc: Multiply timestep on convergence failure, source: default
 timestep_factor_on_lower_its = 1.4		# type: BoutReal, doc: Multiply timestep if iterations are below lower_its, source: default
 timestep_factor_on_upper_its = 0.9		# type: BoutReal, doc: Multiply timestep if iterations exceed upper_its, source: default
-type = snes		# type: string, source: /home/mike/work/cases/perftests/test2dev/test2steady-2026-06-12-44ce2e6c/BOUT.inp
+type = snes		# type: string, source: /home/mike/work/cases/perftests/hermes-perftest/test2steady/BOUT.inp
 upper_its = 8		# type: int, doc: Iterations above which the next timestep is reduced, source: default
 use_coloring = true		# type: bool, doc: Use matrix coloring to calculate Jacobian?, source: default
 use_precon = false		# type: bool, doc: Use user-supplied preconditioner?, source: default

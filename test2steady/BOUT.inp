@@ -1,6 +1,6 @@
 #
 
-nout = 200                     # Number of output timesteps
+nout = 50                     # Number of output timesteps
 timestep = 95788 * 0.1        # 95788 = 1ms in normalised units
 
 MZ = 1
