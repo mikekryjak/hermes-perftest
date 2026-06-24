@@ -10,31 +10,11 @@ Run command:
 mpirun -np 10 hermes_dir/hermes-3 -d test1 restart
 ```
 
-The console output will look like this. The first line is the BOUT++ output for an output time step.
-Lines beginning with "Time: " are a hacky way to get SNES diagnostics per solver timestep. These are later parsed from the log file and plotted.
+***Note:***
+If you are running on a workstation, you may need to pin the simulation to certain cores, for example:
+> taskset -c 0-9 mpirun --bind-to=none -np 10 hermes_dir/hermes-3 -d test1 restart
 
-```
-Sim Time  |  RHS evals  | Wall Time |  Calc    Inv   Comm    I/O   SOLVER
-
-1.787e+07          1       5.17e-02     3.2    0.0    0.5  149.2  -52.9
-Time: 17865419.88100062, timestep: 0.001, nl iter: 1, lin iter: 1, reason: 3
-Time: 17865419.882000618, timestep: 0.001, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.883000616, timestep: 0.001, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.884400617, timestep: 0.0014, nl iter: 1, lin iter: 2, reason: 4
-Time: 17865419.886360615, timestep: 0.00196, nl iter: 1, lin iter: 3, reason: 4
-Time: 17865419.889104616, timestep: 0.002744, nl iter: 1, lin iter: 3, reason: 4
-Time: 17865419.892946217, timestep: 0.0038415999999999997, nl iter: 1, lin iter: 4, reason: 4
-Time: 17865419.898324456, timestep: 0.005378239999999999, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.90585399, timestep: 0.007529535999999999, nl iter: 1, lin iter: 3, reason: 4
-Time: 17865419.91639534, timestep: 0.010541350399999998, nl iter: 1, lin iter: 4, reason: 4
-Time: 17865419.93115323, timestep: 0.014757890559999997, nl iter: 1, lin iter: 5, reason: 4
-Time: 17865419.95181428, timestep: 0.020661046783999996, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.980739746, timestep: 0.028925465497599993, nl iter: 1, lin iter: 4, reason: 4
-```
-
-## Hermes-3 and BOUT++ version requirements
-Use the this Hermes-3 master commit: 8430ce75a0162d915e42fc8146e283fc87d1c866
-Currently you need to use this BOUT++ version: https://github.com/boutproject/BOUT-dev/pull/3226
+A wrapper script is provided in `/sdtools/cli/sdrun.py`.
 
 ## Post-processing
 This repo includes M. Kryjak's personal post-processing script repo `sdtools`. The cases can be post-processed using the `cmonitor.py` tool:
@@ -45,17 +25,124 @@ cmonitor.py -s -solverdiags test1
 
 Outputs from running this on M. Kryjak's machine are included in the repo. In the plots, the top row shows the evolution of physical quantities. The second row shows simulation speed in ms of simulation time per 24hrs of wall time. The third row shows the RMS of the LHS of the equations, i.e. ddt(Ne) etc. These plots show you which quantities are varying the most. The final row is parsed from the log file and contains the SNES diagnostics. These are on a solver timestep basis while the rest of the plot is on an output timestep basis - note that these are not necessarily the same, as the solver timesteps are taken from the log file which is overwritten per run, while the output time comes from the dataset.
 
-Note on convergence reason nomenclature:
-2 - atol
-3 - rtol
-4 - stol
-5 - iteration limit
 
-## Resetting the test
-You can use another tool from `sdtools` to reset the test, which copies the restart files from the baseline directory:
+# Useful tools
+sdtools now has a few different command line tools to help with test running.
+
+## Printing test results
+`test_results.py` will print out test speed and some provenance information:
 
 ```
-transplant.py test1/base test1
+> test_results.py test5steady-example
+Run statistics: /home/mike/work/cases/perftests/test5dev/test5steady-example  [BOUT.log.0]
+  Originator            : mikekryjak@gmail.com   (git email; assumes script runs as the run user)
+  Run started           : Mon Jun 15 15:24:13 2026
+  Run finished          : Mon Jun 15 15:28:28 2026
+  Run time              : 4 m 15 s  (255 s total)
+  Hermes-3 commit       : 44ce2e6c5e140820601533937426c141a294e65c
+  Hermes-3 branch       : auto-update-pydeps, master   (from local git, not run dir)
+  Hermes-3 commit date  : 2026-06-05 15:53:59 -0700   (from local git, not run dir)
+  BOUT++ version        : 5.2.1
+  BOUT++ commit         : 8218f71a2fe495bc138c7ddf7c33bb1be9837525
+  BOUT++ branch         : unknown   (needs --git / local repo)
+  BOUT++ commit date    : 2026-05-11 18:31:52 +0100   (from local git, not run dir)
+```
+
+## Recording test results in a csv
+`record_test.py` will put it in a csv database. By default the csv is made in the current working directory, but you can change it with an argument. You need to pass a branch name for the record as well as the recipe text file. It will record any differences to the recipe in the diffs column.
+
+```
+> record_test.py test5steady-example -b master -r $perftest/recipes/CVODE-2.txt
+  case               : test5steady-example
+  originator         : mikekryjak@gmail.com
+  run_started        : Mon Jun 15 15:34:23 2026
+  run_time_str       : 5 m 4 s
+  run_time_s         : 304
+  recipe             : CVODE-2
+  diffs              : 
+  note               : 
+  hermes_branch      : master
+  hermes_commit      : 44ce2e6c5e140820601533937426c141a294e65c
+  hermes_commit_date : 2026-06-05 15:53:59 -0700
+  bout_version       : 5.2.1
+  bout_commit        : 8218f71a2fe495bc138c7ddf7c33bb1be9837525
+  recorded_at        : 2026-06-24 11:05:25
+
+Record this run as hermes branch 'master'? [y/N] y
+
+Appended to /home/mike/work/cases/perftests/test5dev/run_records.csv
+```
+
+## Applying recipe
+`apply_recipe.py` will copy a recipe from a text file into an input file:
+```
+> apply_recipe.py test5steady-example $perftest/recipes/SNES-MUMPS-1.txt
+-> Applied recipe 'SNES-MUMPS-1.txt' to test5steady-example/BOUT.inp
+   [solver] overwritten (22 lines)
+   [petsc] inserted (9 lines)
+```
+
+
+## Resetting test
+`reset_test.py` will copy the restart files from the `base` directory in the test directory and print a confirmation of the simulation time before and after:
+
+```
+> reset_test.py test5steady-example
+WARNING: this will delete 10 dump/log/.pid file(s) from '/home/mike/work/cases/perftests/test5dev/test5steady-example':
+  BOUT.dmp.0.nc
+  BOUT.dmp.1.nc
+  BOUT.dmp.2.nc
+  BOUT.dmp.3.nc
+  BOUT.dmp.4.nc
+  BOUT.dmp.5.nc
+  BOUT.dmp.6.nc
+  BOUT.dmp.7.nc
+  BOUT.dmp.8.nc
+  BOUT.dmp.9.nc
+Delete these files and reset the case? [yes/no] y
+Deleted 10 dump/log/.pid file(s).
+Reset /home/mike/work/cases/perftests/test5dev/test5steady-example: copied 10 restart file(s) from /home/mike/work/cases/perftests/test5dev/test5steady-example/base
+  Previous simulation time: 59.9948 ms
+  New simulation time:      9.99913 ms
+```
+
+## Copying over restart files from one test to another
+`transplant.py` will copy restart files from one case to another one:
+
+```
+> transplant.py test5ref-m2ul3a-from_lin_260519_master_scratch_cvode test5steady-example/
+-> Case test5steady-example/ cleaned, files removed: ['BOUT.restart.14.nc', 'BOUT.restart.13.nc', 'BOUT.restart.11.nc', 'BOUT.restart.18.nc', 'BOUT.restart.9.nc', 'BOUT.restart.17.nc', 'BOUT.restart.0.nc', 'BOUT.restart.3.nc', 'BOUT.restart.7.nc', 'BOUT.restart.1.nc', 'BOUT.restart.2.nc', 'BOUT.restart.16.nc', 'BOUT.restart.4.nc', 'BOUT.restart.6.nc', 'BOUT.restart.19.nc', 'BOUT.restart.15.nc', 'BOUT.restart.12.nc', 'BOUT.restart.8.nc', 'BOUT.restart.5.nc', 'BOUT.restart.10.nc']
+-> Copied BOUT.restart.14.nc
+-> Copied BOUT.restart.13.nc
+-> Copied BOUT.restart.11.nc
+-> Copied BOUT.dmp.1.nc
+-> Copied BOUT.restart.18.nc
+-> Copied BOUT.restart.9.nc
+-> Copied BOUT.restart.17.nc
+-> Copied BOUT.restart.0.nc
+-> Copied BOUT.restart.3.nc
+-> Copied BOUT.dmp.0.nc
+-> Copied BOUT.restart.7.nc
+-> Copied BOUT.restart.1.nc
+-> Copied BOUT.restart.2.nc
+-> Copied BOUT.dmp.6.nc
+-> Copied BOUT.dmp.2.nc
+-> Copied BOUT.restart.16.nc
+-> Copied BOUT.dmp.7.nc
+-> Copied BOUT.dmp.4.nc
+-> Copied BOUT.dmp.9.nc
+-> Copied BOUT.restart.4.nc
+-> Copied BOUT.dmp.3.nc
+-> Copied BOUT.restart.6.nc
+-> Copied BOUT.dmp.8.nc
+-> Copied BOUT.restart.19.nc
+-> Copied BOUT.restart.15.nc
+-> Copied BOUT.restart.12.nc
+-> Copied BOUT.restart.8.nc
+-> Copied BOUT.restart.5.nc
+-> Copied BOUT.dmp.5.nc
+-> Copied BOUT.restart.10.nc
+Transplant completed from test5ref-m2ul3a-from_lin_260519_master_scratch_cvode to test5steady-example/
 ```
 
 
@@ -152,7 +239,7 @@ Restarted from test5scratch at 10ms, when the simulation is more steady.
 Runs for 50 output steps to get 0.5ms.
 Default recipe: CVODE-1
 
-## PETSc configuration
+# PETSc configuration
 To enable STRUMPACK, use the following configure flags for PETSc:
 
 ```
