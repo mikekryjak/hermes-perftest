@@ -33,8 +33,8 @@ use_precon = True                       # always true
 #######################solver########################
 [hermes]
 components = (d+, d, e, c,  braginskii_collisions, 
-                braginskii_friction, braginskii_heat_exchange,braginskii_conduction,
-                sheath_boundary_simple, recycling, sound_speed, reactions, electron_force_balance)                           # These are all we want
+                braginskii_friction, braginskii_heat_exchange, sheath_boundary_simple,
+                braginskii_conduction, recycling, sound_speed, reactions, electron_force_balance)                           # These are all we want
 
 Nnorm = 1e+17  # Reference density [m^-3]                        # Keep as this for now
 Bnorm = 1   # Reference magnetic field [T]
