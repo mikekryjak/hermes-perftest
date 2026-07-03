@@ -10,31 +10,11 @@ Run command:
 mpirun -np 10 hermes_dir/hermes-3 -d test1 restart
 ```
 
-The console output will look like this. The first line is the BOUT++ output for an output time step.
-Lines beginning with "Time: " are a hacky way to get SNES diagnostics per solver timestep. These are later parsed from the log file and plotted.
+***Note:***
+If you are running on a workstation, you may need to pin the simulation to certain cores, for example:
+> taskset -c 0-9 mpirun --bind-to=none -np 10 hermes_dir/hermes-3 -d test1 restart
 
-```
-Sim Time  |  RHS evals  | Wall Time |  Calc    Inv   Comm    I/O   SOLVER
-
-1.787e+07          1       5.17e-02     3.2    0.0    0.5  149.2  -52.9
-Time: 17865419.88100062, timestep: 0.001, nl iter: 1, lin iter: 1, reason: 3
-Time: 17865419.882000618, timestep: 0.001, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.883000616, timestep: 0.001, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.884400617, timestep: 0.0014, nl iter: 1, lin iter: 2, reason: 4
-Time: 17865419.886360615, timestep: 0.00196, nl iter: 1, lin iter: 3, reason: 4
-Time: 17865419.889104616, timestep: 0.002744, nl iter: 1, lin iter: 3, reason: 4
-Time: 17865419.892946217, timestep: 0.0038415999999999997, nl iter: 1, lin iter: 4, reason: 4
-Time: 17865419.898324456, timestep: 0.005378239999999999, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.90585399, timestep: 0.007529535999999999, nl iter: 1, lin iter: 3, reason: 4
-Time: 17865419.91639534, timestep: 0.010541350399999998, nl iter: 1, lin iter: 4, reason: 4
-Time: 17865419.93115323, timestep: 0.014757890559999997, nl iter: 1, lin iter: 5, reason: 4
-Time: 17865419.95181428, timestep: 0.020661046783999996, nl iter: 1, lin iter: 1, reason: 4
-Time: 17865419.980739746, timestep: 0.028925465497599993, nl iter: 1, lin iter: 4, reason: 4
-```
-
-## Hermes-3 and BOUT++ version requirements
-Use the this Hermes-3 master commit: 8430ce75a0162d915e42fc8146e283fc87d1c866
-Currently you need to use this BOUT++ version: https://github.com/boutproject/BOUT-dev/pull/3226
+A wrapper script is provided in `/sdtools/cli/sdrun.py`.
 
 ## Post-processing
 This repo includes M. Kryjak's personal post-processing script repo `sdtools`. The cases can be post-processed using the `cmonitor.py` tool:
@@ -45,23 +25,126 @@ cmonitor.py -s -solverdiags test1
 
 Outputs from running this on M. Kryjak's machine are included in the repo. In the plots, the top row shows the evolution of physical quantities. The second row shows simulation speed in ms of simulation time per 24hrs of wall time. The third row shows the RMS of the LHS of the equations, i.e. ddt(Ne) etc. These plots show you which quantities are varying the most. The final row is parsed from the log file and contains the SNES diagnostics. These are on a solver timestep basis while the rest of the plot is on an output timestep basis - note that these are not necessarily the same, as the solver timesteps are taken from the log file which is overwritten per run, while the output time comes from the dataset.
 
-Note on convergence reason nomenclature:
-2 - atol
-3 - rtol
-4 - stol
-5 - iteration limit
 
-## Resetting the test
-You can use another tool from `sdtools` to reset the test, which copies the restart files from the baseline directory:
+# Useful tools
+sdtools now has a few different command line tools to help with test running.
+
+## Printing test results
+`test_results.py` will print out test speed and some provenance information:
 
 ```
-transplant.py test1/base test1
+> test_results.py test5steady-example
+Run statistics: /home/mike/work/cases/perftests/test5dev/test5steady-example  [BOUT.log.0]
+  Originator            : mikekryjak@gmail.com   (git email; assumes script runs as the run user)
+  Run started           : Mon Jun 15 15:24:13 2026
+  Run finished          : Mon Jun 15 15:28:28 2026
+  Run time              : 4 m 15 s  (255 s total)
+  Hermes-3 commit       : 44ce2e6c5e140820601533937426c141a294e65c
+  Hermes-3 branch       : auto-update-pydeps, master   (from local git, not run dir)
+  Hermes-3 commit date  : 2026-06-05 15:53:59 -0700   (from local git, not run dir)
+  BOUT++ version        : 5.2.1
+  BOUT++ commit         : 8218f71a2fe495bc138c7ddf7c33bb1be9837525
+  BOUT++ branch         : unknown   (needs --git / local repo)
+  BOUT++ commit date    : 2026-05-11 18:31:52 +0100   (from local git, not run dir)
 ```
 
-# Test case warning
+## Recording test results in a csv
+`record_test.py` will put it in a csv database. By default the csv is made in the current working directory, but you can change it with an argument. You need to pass a branch name for the record as well as the recipe text file. It will record any differences to the recipe in the diffs column.
 
-**NOTE:** The tests are configured for a very short runtime so that they take 5 minutes. However this is often not representative of performance and you need to run it for a couple of hours to get a good idea. A suggested
-timestep for this is 95780 * 0.1, which is 0.1ms (95780 = 1ms in normalised time).
+```
+> record_test.py test5steady-example -b master -r $perftest/recipes/CVODE-2.txt
+  case               : test5steady-example
+  originator         : mikekryjak@gmail.com
+  run_started        : Mon Jun 15 15:34:23 2026
+  run_time_str       : 5 m 4 s
+  run_time_s         : 304
+  recipe             : CVODE-2
+  diffs              : 
+  note               : 
+  hermes_branch      : master
+  hermes_commit      : 44ce2e6c5e140820601533937426c141a294e65c
+  hermes_commit_date : 2026-06-05 15:53:59 -0700
+  bout_version       : 5.2.1
+  bout_commit        : 8218f71a2fe495bc138c7ddf7c33bb1be9837525
+  recorded_at        : 2026-06-24 11:05:25
+
+Record this run as hermes branch 'master'? [y/N] y
+
+Appended to /home/mike/work/cases/perftests/test5dev/run_records.csv
+```
+
+## Applying recipe
+`apply_recipe.py` will copy a recipe from a text file into an input file:
+```
+> apply_recipe.py test5steady-example $perftest/recipes/SNES-MUMPS-1.txt
+-> Applied recipe 'SNES-MUMPS-1.txt' to test5steady-example/BOUT.inp
+   [solver] overwritten (22 lines)
+   [petsc] inserted (9 lines)
+```
+
+
+## Resetting test
+`reset_test.py` will copy the restart files from the `base` directory in the test directory and print a confirmation of the simulation time before and after:
+
+```
+> reset_test.py test5steady-example
+WARNING: this will delete 10 dump/log/.pid file(s) from '/home/mike/work/cases/perftests/test5dev/test5steady-example':
+  BOUT.dmp.0.nc
+  BOUT.dmp.1.nc
+  BOUT.dmp.2.nc
+  BOUT.dmp.3.nc
+  BOUT.dmp.4.nc
+  BOUT.dmp.5.nc
+  BOUT.dmp.6.nc
+  BOUT.dmp.7.nc
+  BOUT.dmp.8.nc
+  BOUT.dmp.9.nc
+Delete these files and reset the case? [yes/no] y
+Deleted 10 dump/log/.pid file(s).
+Reset /home/mike/work/cases/perftests/test5dev/test5steady-example: copied 10 restart file(s) from /home/mike/work/cases/perftests/test5dev/test5steady-example/base
+  Previous simulation time: 59.9948 ms
+  New simulation time:      9.99913 ms
+```
+
+## Copying over restart files from one test to another
+`transplant.py` will copy restart files from one case to another one:
+
+```
+> transplant.py test5ref-m2ul3a-from_lin_260519_master_scratch_cvode test5steady-example/
+-> Case test5steady-example/ cleaned, files removed: ['BOUT.restart.14.nc', 'BOUT.restart.13.nc', 'BOUT.restart.11.nc', 'BOUT.restart.18.nc', 'BOUT.restart.9.nc', 'BOUT.restart.17.nc', 'BOUT.restart.0.nc', 'BOUT.restart.3.nc', 'BOUT.restart.7.nc', 'BOUT.restart.1.nc', 'BOUT.restart.2.nc', 'BOUT.restart.16.nc', 'BOUT.restart.4.nc', 'BOUT.restart.6.nc', 'BOUT.restart.19.nc', 'BOUT.restart.15.nc', 'BOUT.restart.12.nc', 'BOUT.restart.8.nc', 'BOUT.restart.5.nc', 'BOUT.restart.10.nc']
+-> Copied BOUT.restart.14.nc
+-> Copied BOUT.restart.13.nc
+-> Copied BOUT.restart.11.nc
+-> Copied BOUT.dmp.1.nc
+-> Copied BOUT.restart.18.nc
+-> Copied BOUT.restart.9.nc
+-> Copied BOUT.restart.17.nc
+-> Copied BOUT.restart.0.nc
+-> Copied BOUT.restart.3.nc
+-> Copied BOUT.dmp.0.nc
+-> Copied BOUT.restart.7.nc
+-> Copied BOUT.restart.1.nc
+-> Copied BOUT.restart.2.nc
+-> Copied BOUT.dmp.6.nc
+-> Copied BOUT.dmp.2.nc
+-> Copied BOUT.restart.16.nc
+-> Copied BOUT.dmp.7.nc
+-> Copied BOUT.dmp.4.nc
+-> Copied BOUT.dmp.9.nc
+-> Copied BOUT.restart.4.nc
+-> Copied BOUT.dmp.3.nc
+-> Copied BOUT.restart.6.nc
+-> Copied BOUT.dmp.8.nc
+-> Copied BOUT.restart.19.nc
+-> Copied BOUT.restart.15.nc
+-> Copied BOUT.restart.12.nc
+-> Copied BOUT.restart.8.nc
+-> Copied BOUT.restart.5.nc
+-> Copied BOUT.dmp.5.nc
+-> Copied BOUT.restart.10.nc
+Transplant completed from test5ref-m2ul3a-from_lin_260519_master_scratch_cvode to test5steady-example/
+```
+
 
 # Test cases
 ## Test 1
@@ -76,9 +159,6 @@ This test restarts from the baseline with x1.5 power and runs 10 output timestep
 Known performance on M. Kryjak's machine (see solver settings section):
  - SNES-1 settings: 5m 3s (~550 ms/24hrs) (Aug 2025)
  - SNES-MUMPS-1 settings: 4m 45s (Dec 2025)
-
-### Performance with SNES-MUMPS-1 (default)
-![Test 1 diagnostic output](mon_test1.png)
 
 ## Test 2
 Based on the full, unsimplified version of Test 1. It's a lot more computationally intensive than Test 1 
@@ -95,18 +175,24 @@ Known performance on M. Kryjak's machine (short):
  - SNES-STRUMPACK-2 settings: 45s  (Sept 2025)
  - SNES-MUMPS-1 settings: 1m 42s (Dec 2025)
 
-### Performance with SNES-MUMPS-1 (default)
-![Test 2 diagnostic output](mon_test2.png)
-
-
-## Test 2long
+### Test 2long
 Same as test 3 but ran for 3ms, which is short enough to be quick to run using good recipes but long enough to capture both the initial transient and a bit of the steady state.
 
 Known performance on M. Kryjak's machine (short):
  - SNES-MUMPS-1 settings: 7m 1s (Dec 2025)
 
- ### Performance with SNES-MUMPS-1 (default)
-![Test 2long diagnostic output](mon_test2long.png)
+### Test 2scratch
+Ran from scratch for 45ms.
+Default recipe: SNES-MUMPS-1 
+
+### Test 2stiff
+Restarted from test2scratch at 2ms, when the simulation is stiffer.
+Default recipe: SNES-MUMPS-1
+Runs for 50 timesteps to get 5ms. 
+
+### Test 2steady
+Restarted from test2scratch at 10ms, when the simulation is more steady.
+Default recipe: SNES-MUMPS-1
 
 ## Test 3
 Based on DIII-D. Relevant to M. Tsagkiridis' project. It's a very challenging
@@ -116,10 +202,44 @@ Known performance on M. Kryjak's machine:
  - SNES-1 settings: 3m 11s  (~8 ms/24hrs) (Sept 2025)
  - SNES-MUMPS-1 settings: 26s (Dec 2025)
 
-### Performance with SNES-MUMPS-1 (default)
-![Test 3 diagnostic output](mon_test3.png)
+## Test 4scratch
+Full resolution ST40 simulation (similar to Test 2, but 4x higher res). 
+It's a low density, high temperature case, almost sheath limited.
+Original case name: st40fl2-master_scratch
+Original grid name: g4bf1-fine_nonorth_xpoint_guards_allfields.nc
 
-## PETSc configuration
+Ran for 45ms from scratch.
+Default recipe: SNES-MUMPS-1
+
+### Test 4stiff
+Restarted from test4scratch at 2ms, when the simulation is very stiff.
+Runs for 30 output steps to get 1ms.
+Default recipe: SNES-MUMPS-1
+
+### Test 4steady
+Restarted from test4scratch at 10ms, when the simulation is more steady.
+Runs for 90 output steps to get 0.9ms.
+Default recipe: SNES-MUMPS-1
+
+## Test 5scratch
+Low resolution MAST-U simulation. Runs OK on CVODE but very slow on MUMPS.
+Full resolution is extremely slow on CVODE (~2ms/24hrs, not included as test).
+Original case name: test5ref-m2ul3a-from_lin_260519_master_scratch_cvode
+Original grid: CDN_46895_lowresol_260519_nowallpump_1e21.nc
+Runs for 45ms from scratch. 
+Default recipe: CVODE-1
+
+### Test 5stiff
+Restarted from test5scratch at 10ms, when the simulation is more steady.
+Runs for 20 output steps to get 0.01ms.
+Default recipe: CVODE-1
+
+### Test 5steady
+Restarted from test5scratch at 10ms, when the simulation is more steady.
+Runs for 50 output steps to get 0.5ms.
+Default recipe: CVODE-1
+
+# PETSc configuration
 To enable STRUMPACK, use the following configure flags for PETSc:
 
 ```
@@ -159,244 +279,3 @@ make PETSC_DIR=$PWD PETSC_ARCH=arch-linux-c-opt all
 
 Note that you will need to have `flex` and `bison` installed for `ptscotch` which is a STRUMPACK dependency. These are additional to the usual dependency list in the Hermes-3 documentation
 
-# Solver settings
-
-## CVODE-1
-Standard CVODE settings:
-
-```
-[solver]
-mxstep = 1e9
-cvode_max_order = 3
-maxl = 5
-atol = 1e-12 * 1
-rtol = 1e-6 * 1
-use_precon = True
-diagnose = false
-```
-
-## SNES-1
-Settings using the latest Hypre ILU (needs PETSc >=3.23.3) with Malamas Tsagkiridis' PID timestepper:
-
-```
-[solver]
-diagnose = true
-type = snes                      # Backward Euler steady-state solver
-snes_type = newtonls             # Nonlinear solver
-ksp_type = gmres                 # Linear solver: gmres, cg
-max_nonlinear_iterations = 16    # default: 50
-pc_type = hypre                  # Preconditioner type
-pc_hypre_type = ilu         
-lag_jacobian = 7                 # Iterations between jacobian recalculations. default: 50
-atol = 1e-12                      # Absolute tolerance
-rtol = 1e-6                      # Relative tolerance
-stol = 1e-12
-maxf = 20000
-maxl = 260
-pid_controller = true
-target_its = 5
-kP = 0.65
-kI = 0.30
-kD = 0.15
-matrix_free_operator = true
-timestep = 0.001                 # Initial timestep
-
-[petsc]
-
-#log_view = true
-                                    
-pc_hypre_ilu_level = 1                            # k = 2  (default is 0, try 1 and 2)
-pc_hypre_ilu_local_reordering = true              # reduces fill / improves robustness
-pc_hypre_ilu_tri_solve = true                     # use triangular solve instead of smoothing
-pc_hypre_ilu_print_level = true
-snes_fd_color_use_mat = true
-```
-
-## SNES-STRUMPACK-1
-Example STRUMPACK settings with STRUMPACK as direct solver:
-
-```
-[solver]
-diagnose = true
-type = snes                     # Backward Euler steady-state solver
-snes_type = newtonls            # Nonlinear solver
-ksp_type = preonly              # Linear solver
-use_precon = false
-max_nonlinear_iterations = 15   # default: 50
-pc_type = lu                    # Preconditioner type
-lag_jacobian = 500              # Iterations between jacobian recalculations. default: 50
-atol = 1e-12                    # Absolute tolerance
-rtol = 1e-6                     # Relative tolerance
-stol = 1e-12
-maxl = 20                       # default: 20
-use_coloring = true
-matrix_free_operator = true
-
-[petsc]
-pc_factor_mat_solver_type = strumpack
-mat_strumpack_verbose = true
-```
-
-## SNES-STRUMPACK-3
-STRUMPACK settings from M. Kryjak's optimisation. Here it's used as a direct solver.
-
-```
-[solver]
-diagnose = true
-type = snes
-snes_type = newtonls   # newtontr not as good
-ksp_type = preonly
-pc_type = lu
-max_nonlinear_iterations = 16
-atol = 4e-8
-rtol = 1e-6
-stol = 0
-maxf = 2000
-maxl = 260
-matrix_free_operator = false
-lag_jacobian = 1
-timestep = 0.001
-
-pid_controller = true
-target_its = 3
-kP = 0.65   # 0.65
-kI = 0.3 # 0.30
-kD = 0.15 # 0.15
-# min_tstep_decrease = 0.5
-# max_tstep_increase = 1.2
-
-[petsc]
-
-# STRUMPACK as factorization backend for ILU/LU
-pc_factor_mat_solver_type = strumpack
-
-mat_strumpack_reordering = metis  # try amd/rcm if needed
-mat_strumpack_colperm = true      # allow column permutation for nonzero diagonal
-pc_factor_shift_type = NONZERO
-pc_factor_shift_amount = 1e-12
-
-```
-
-## SNES-MUMPS-1
-MUMPS settings from H. Al Daas' optimisation on 13/09/25.
-Best performance as of 16/09/25.
-
-```
-[solver]
-diagnose = true
-type = snes
-snes_type = newtonls   # newtontr not as good
-ksp_type = fgmres
-pc_type = lu
-max_nonlinear_iterations = 10
-atol = 1e-7
-rtol = 1e-6
-stol = 1e-12
-maxf = 2000
-maxl = 260
-matrix_free_operator = false
-lag_jacobian = 1
-timestep = 0.1
- 
-pid_controller = true
-target_its = 100
-kP = 0.233   # 0.65
-kI = 0.133 # 0.30
-kD = 0.0 # 0.15
-# min_tstep_decrease = 0.5
-# max_tstep_increase = 1.2
- 
-[petsc]
-#snes_monitor
-#snes_converged_reason
-#ksp_converged_reason
-log_view
-snes_fd_color_use_mat
-ksp_type = fgmres
-pc_type = lu
-pc_factor_mat_solver_type = mumps
-snes_linesearch_type = basic
-
-```
-
-## TS-PSEUDO-1
-Experimental, initial pseudo timestep settings
-
-```
-[solver]
-diagnose = true
-pseudo_time_stepping = true
-type = petsc
-max_nonlinear_iterations = 16
-atol = 4e-8
-rtol = 1e-6
-matrix_free_operator = false
-# lag_jacobian = 1
-start_timestep = 1e-6
-use_jacobian = true
-interpolate = false
-
-
-[petsc]
-ts_type = pseudo
-ts_pseudo_monitor = true
-# ts_monitor = true
-log_view = true
-
-snes_type = newtonls   # newtontr not as good
-# snes_monitor_short = true
-snes_rtol = 1e-6
-snes_atol = 4e-8
-ts_max_reject = 50
-ts_max_steps = 1000
-
-ts_adapt_type = basic
-
-ksp_type = fgmres
-pc_type = lu
-# ksp_monitor_short = true
-pc_monitor = true
-```
-
-## SNES-PTC-1
-
-Pseudo-Transient Continuation (PTC) with SNES solver.  Timestep varies
-by cell so the output timestep is the minimum over the whole domain.
-
-
-
-```
-[solver]
-diagnose = true
-type = snes
-equation_form = pseudo_transient    # Enable pseudo-time stepping
-
-pid_controller = true   # Use PID controller to scale all timesteps based on solver convergence
-target_its = 4         # Target number of nonlinear iterations
-kP = 0.233
-kI = 0.133
-kD = 0.0
-
-snes_type = newtonls
-ksp_type = fgmres
-pc_type = lu
-max_nonlinear_iterations = 20   # Limit significantly above target_its to limit failures
-atol = 1e-7
-rtol = 1e-6
-stol = 1e-12
-maxf = 200
-maxl = 20
-
-matrix_free_operator = true   # Use the actual nonlinear function for the matrix-vector product
-
-lag_jacobian = 5   # With pid_controller=true the Jacobian will be recalculated every timestep
-timestep = 0.1       # Starting internal timestep
-
-dt_min_reset = 1e-10
-
-[petsc]
-ksp_type = fgmres
-pc_type = lu
-pc_factor_mat_solver_type = strumpack
-snes_linesearch_type = basic
-```

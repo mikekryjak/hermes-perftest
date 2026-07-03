@@ -1,0 +1,54 @@
+# Best recipe from Malamas as of 15/06/2026
+
+[solver]
+type = snes                     # Backward Euler steady-state solver
+snes_type = newtonls            # Nonlinear solver
+equation_form = rearranged_backward_euler  # rearranged_backward_euler, pseudo_transient, backward_euler, direct_newton
+ksp_type = gmres                # Linear solver: gmres, cg, preonly
+max_nonlinear_iterations = 26   # default: 50
+pc_type = ilu                   # Preconditioner type
+#pc_hypre_type = ilu             # Hypre preconditioner type: euclid, pilut, parasails, boomeramg, ams, ads
+lag_jacobian = 7               # Iterations between jacobian recalculations. default: 50
+atol = 1e-12                    # Absolute tolerance
+rtol = 1e-6                     # Relative tolerance
+stol = 1e-18
+maxf = 80000                    # Maximum number of function evaluations
+timestep = 1000.0
+dt_min_reset = 1e-10
+#max_timestep = 125000
+max_snes_failures = 20
+maxl = 2000                      # default: 20
+#matrix_free = true
+#use_coloring = false
+#predictor = false
+#line_search_type = nleqerr      # Line search type: basic, bt, l2, cp, nleqerr
+diagnose = true
+#diagnose_failures = true
+pid_controller = true
+target_its = 5
+kP = 0.65
+kI = 0.25
+kD = 0.15
+matrix_free_operator = true
+#force_symmetric_coloring = true
+
+[petsc]
+#pc_hypre_ilu_type = Block-Jacobi-ILUk           #
+#pc_hypre_ilu_level = 1          # k = 2  (try 1 and 2)
+#pc_hypre_ilu_local_reordering = true # reduces fill / improves robustness
+#pc_hypre_ilu_tri_solve = true        # use triangular solve instead of smoothing
+
+#pc_hypre_ilu_type = Block-Jacobi-ILUT           #
+#pc_hypre_ilu_drop_threshold = 3e-4 #1e-3   # τ: smaller = stronger, denser
+#pc_hypre_ilu_max_nnz_per_row = 100 #70
+#pc_hypre_ilu_local_reordering = true # reduces fill / improves robustness
+#pc_hypre_ilu_tri_solve = true        # use triangular solve instead of smoothing
+
+pc_factor_mat_solver_type = strumpack
+#mat_strumpack_compression = HSS # Compression type (BLR default is good; try HODLR next)
+#mat_strumpack_compression_rel_tol = 1e-5 # Compression accuracy & granularity (tune these)
+#mat_strumpack_compression_abs_tol = 1e-18
+#mat_strumpack_compression_leaf_size = 256
+#mat_strumpack_compression_min_sep_size = 256
+#mat_strumpack_reordering = METIS    # Reordering for less fill  # METIS/SCOTCH/RCM/GEOMETRIC also available
+#mat_strumpack_colperm = true
