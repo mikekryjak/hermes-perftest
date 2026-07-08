@@ -183,16 +183,16 @@ Known performance on M. Kryjak's machine (short):
 
 ### Test 2scratch
 Ran from scratch for 45ms.
-Default recipe: SNES-MUMPS-1 
+Default recipe: SNES-MUMPS-2 
 
 ### Test 2stiff
 Restarted from test2scratch at 2ms, when the simulation is stiffer.
-Default recipe: SNES-MUMPS-1
+Default recipe: SNES-MUMPS-2
 Runs for 50 timesteps to get 5ms. 
 
 ### Test 2steady
 Restarted from test2scratch at 10ms, when the simulation is more steady.
-Default recipe: SNES-MUMPS-1
+Default recipe: SNES-MUMPS-2
 
 ## Test 3
 Based on DIII-D. Relevant to M. Tsagkiridis' project. It's a very challenging
@@ -209,17 +209,17 @@ Original case name: st40fl2-master_scratch
 Original grid name: g4bf1-fine_nonorth_xpoint_guards_allfields.nc
 
 Ran for 45ms from scratch.
-Default recipe: SNES-MUMPS-1
+Default recipe: SNES-MUMPS-2
 
 ### Test 4stiff
 Restarted from test4scratch at 2ms, when the simulation is very stiff.
 Runs for 30 output steps to get 1ms.
-Default recipe: SNES-MUMPS-1
+Default recipe: SNES-MUMPS-2
 
 ### Test 4steady
 Restarted from test4scratch at 10ms, when the simulation is more steady.
 Runs for 90 output steps to get 0.9ms.
-Default recipe: SNES-MUMPS-1
+Default recipe: SNES-MUMPS-2
 
 ## Test 5scratch
 Low resolution MAST-U simulation. Runs OK on CVODE but very slow on MUMPS.
