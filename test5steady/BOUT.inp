@@ -6,29 +6,27 @@ NXPE = 1                # partitions in x
 
 # Initial conditions
 tnorm_setting = 1
-#initial_te = 25 / tnorm_setting
 initial_ti = 25 / tnorm_setting
 initial_ne = 0.5e18 / hermes:Nnorm    # Nm-3
-#initial_pe = initial_te * initial_ne
 initial_pi = initial_ti * initial_ne
 
 [input]
-error_on_unused_options = false #true
+error_on_unused_options = true
 
 [mesh]
 file = "grid_test5.nc"             # Tokamak grid file, must be in same directory
 
-[mesh:paralleltransform]                # Here be dragons *wrapping of field lines
+[mesh:paralleltransform] 
 type = shifted
 
 #######################solver########################
 [solver]                                # cvode (Beuler not very good in 2D atm)
-type = cvode 				# Added by Lin 0926
+type = cvode 		
 mxstep = 1e9                            # Max steps (set to max)
 mxorder = 1                             # Better to keep to first order
 atol = 1e-12 * 1                        # don't touch
 rtol = 1e-7 * 1                         # this value is good for most cases (could set to 1e-4)
-use_precon = True                       # always true
+cvode_precon_method = user
 
 #######################solver########################
 [hermes]
@@ -36,14 +34,9 @@ components = (d+, d, e, c,  braginskii_collisions,
                 braginskii_friction, braginskii_heat_exchange, sheath_boundary_simple,
                 braginskii_conduction, recycling, sound_speed, reactions, electron_force_balance)                           # These are all we want
 
-Nnorm = 1e+17  # Reference density [m^-3]                        # Keep as this for now
-Bnorm = 1   # Reference magnetic field [T]
-Tnorm = 1 #tnorm_setting   # Reference temperature [eV]
-qe = 1.60218e-19
-Mp = 1.67262e-27
-Cs0 = sqrt(qe * Tnorm / Mp)
-Omega_ci = qe * Bnorm / Mp
-rho_s0 = Cs0 / Omega_ci
+Nnorm = 1e+17               # Reference density [m^-3]    
+Bnorm = 1                   # Reference magnetic field [T]
+Tnorm = tnorm_setting       # Reference temperature [eV]
 
 
 [braginskii_collisions]
@@ -68,10 +61,6 @@ thermal_conduction = true
 conduction_collisions_mode = braginskii
 
 
-kappa_limit_alpha = -1
-eta_limit_alpha = -1
-# Change to match david
-
 recycle_as = d
 target_recycle = true
 target_recycle_multiplier = 0.99
@@ -88,19 +77,18 @@ pfr_recycle_energy = 3.5
 neutral_pump = true 
 pump_recycle_multiplier = 0.99
 
-target_fast_recycle_energy_factor = 0.48        # Keep as same
-target_fast_recycle_fraction = 0.8             # Keep as same
+target_fast_recycle_energy_factor = 0.48
+target_fast_recycle_fraction = 0.8
 
-anomalous_nu = 2 # 0.2    ### change to davids
 diagnose = true
 
 [Nd+]
 
-function = initial_ne                           # initial conditions (see above)
+function = initial_ne  
 bndry_core = neumann
 bndry_sol = neumann
 bndry_pf = neumann
-bndry_all = neumann   # All boundaries neumann  # Keep as neumann
+bndry_all = neumann
 
 [NVd+]
 bndry_sol = neumann
@@ -118,7 +106,7 @@ function = initial_pi
 bndry_core = neumann
 bndry_sol = neumann
 bndry_pf = neumann  
-bndry_all = neumann   # All boundaries neumann
+bndry_all = neumann 
 
 # Core source
 power_in = 0.5 # 0.3   # MW
@@ -139,16 +127,10 @@ diffusion_collisions_mode = afn
 
 # Added to match the ST40 branch
 flux_limit = 1
-neutral_lmax = 0.1 # it should be 0.1 m not 100
-# Added to match the ST40 branch for 94974 branch
-double_count_lmax = false
-legacy_thermal_speed = false
-legacy_limiter_form = false
 
 
 AA = 2
 diagnose = true
-#diagnose_eqns = true
 
 output_ddt = true
 
@@ -165,7 +147,6 @@ target_fast_refl_fraction = 0.8                # how likely to fast reflection (
 sol_fast_refl_fraction = 0.7
 pfr_fast_refl_fraction = 0.7
 
-kappa_limit_alpha = 1
 
 [Pd]
 bndry_sol = neumann  # This prevents advection of density or energy out of the SOL
@@ -178,11 +159,6 @@ bndry_core = neumann
 bndry_all = neumann
 
 [NVd]
-bndry_sol = neumann
-bndry_core = neumann
-bndry_pf = neumann
-
-[Vd]
 bndry_sol = neumann
 bndry_core = neumann
 bndry_pf = neumann

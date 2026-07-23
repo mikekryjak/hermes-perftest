@@ -1,5 +1,3 @@
-#
-
 nout = 10                     # Number of output timesteps
 timestep = 95788 * 0.2        # 95788 = 1ms in normalised units
 
@@ -33,12 +31,10 @@ coeff_D = 1
 coeff_Chi = 3
 
 [input]
-error_on_unused_options = false    # Prevents crash from custom inputs
+error_on_unused_options = true
 
 [mesh]
 file = "grid_test1.nc"
-nx = 40
-MXG = 2
 
 [mesh:paralleltransform]
 type = shifted
@@ -59,13 +55,11 @@ matrix_free_operator = false
 lag_jacobian = 1
 timestep = 0.1
  
-pid_controller = true
+timestep_control = pid_nonlinear_its
 target_its = 100
 kP = 0.233   # 0.65
 kI = 0.133 # 0.30
 kD = 0.0 # 0.15
-# min_tstep_decrease = 0.5
-# max_tstep_increase = 1.2
  
 [petsc]
 #snes_monitor
@@ -164,7 +158,7 @@ precondition = false
 neutral_conduction = true
 neutral_viscosity = true
 
-flux_limit = true
+flux_limit = 1
 AA = 2
 diagnose = true
 output_ddt = true
@@ -219,7 +213,6 @@ diagnose = true
 [Pe]
 function = initial_pi
 bndry_sol = decaylength(0.03 / hermes:rho_s0)
-bndry_pfr = decaylength(0.03 / hermes:rho_s0)
 bndry_all = neumann   # All other boundaries low density
 
 source = electron_power * 2/3 / core_volume * core_source_shape    # Pa s^-1 m^-3
