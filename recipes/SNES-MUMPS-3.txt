@@ -1,7 +1,6 @@
-# SNES-MUMPS-2
-# MUMPS settings based on those of H. Al Daas' optimisation on 13/09/25.
-# Performance improved by slightly lagging the Jacobian and rescaling
-# variables to permit a looser tolerance.
+# SNES-MUMPS-3
+# SNES-MUMPS-2 with a controller target the timestep can shrink under, and
+# MUMPS null-pivot detection.
 
 [solver]
 diagnose = true
@@ -20,13 +19,13 @@ lag_jacobian = 3
 timestep = 0.1
 max_snes_failures = 20
 scale_vars = true
- 
+
 timestep_control = pid_nonlinear_its
-target_its = 100
+target_its = 7   # below max_nonlinear_iterations, so dt can shrink as well as grow
 kP = 0.233   # 0.65
 kI = 0.133 # 0.30
 kD = 0.0 # 0.15
- 
+
 [petsc]
 log_view
 snes_fd_color_use_mat
@@ -34,3 +33,6 @@ ksp_type = fgmres
 pc_type = lu
 pc_factor_mat_solver_type = mumps
 snes_linesearch_type = basic
+
+# This prevents zero pivot when timesteps get very large.
+mat_mumps_icntl_24 = 1
