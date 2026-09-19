@@ -23,6 +23,9 @@ initial_ne = 0.6404e20 / hermes:Nnorm
 ####### DERIVED FROM CUSTOM INPUTS
 initial_pe = initial_te * initial_ne
 initial_pi = initial_ti * initial_ne
+initial_nd = 1e16 / hermes:Nnorm   # 1e16 m^-3; non-zero so scale_vars does not floor it
+initial_td = 3 / hermes:Tnorm      # 3 eV
+initial_pd = initial_nd * initial_td
 core_pi = core_ne * core_ti
 core_pe = core_ne * core_te
 
@@ -181,7 +184,11 @@ sol_fast_refl_fraction = 0.70
 pfr_fast_refl_fraction = 0.70
 
 
+[Nd]
+function = initial_nd
+
 [Pd]
+function = initial_pd
 bndry_sol = neumann  # This prevents advection of density or energy out of the SOL
 bndry_core = neumann
 bndry_all = neumann
