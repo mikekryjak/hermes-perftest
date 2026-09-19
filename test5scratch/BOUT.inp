@@ -1,5 +1,5 @@
 nout = 450            # number of writes
-timestep = 95780 * 0.1          # 9578 is 1/10 of a milisecond
+timestep = 95788 * 0.1        # 95788 = 1ms in normalised units
 MZ = 1                  # points in z
 NXPE = 1                # partitions in x
 
