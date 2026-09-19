@@ -213,7 +213,7 @@ Default recipe: SNES-MUMPS-1
 
 ### Test 4stiff
 Restarted from test4scratch at 2ms, when the simulation is very stiff.
-Runs for 30 output steps to get 1ms.
+Runs for 30 output steps to get 0.015ms.
 Default recipe: SNES-MUMPS-1
 
 ### Test 4steady
@@ -230,8 +230,8 @@ Runs for 45ms from scratch.
 Default recipe: CVODE-1
 
 ### Test 5stiff
-Restarted from test5scratch at 10ms, when the simulation is more steady.
-Runs for 20 output steps to get 0.01ms.
+Restarted from test5scratch at 2ms, when the simulation is stiffer.
+Runs for 20 output steps to get 0.2ms.
 Default recipe: CVODE-1
 
 ### Test 5steady
