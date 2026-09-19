@@ -7,7 +7,7 @@ diagnose = true
 type = snes
 equation_form = pseudo_transient    # Enable pseudo-time stepping
 
-pid_controller = true   # Use PID controller to scale all timesteps based on solver convergence
+timestep_control = pid_nonlinear_its   # Use PID controller to scale all timesteps based on solver convergence
 target_its = 4         # Target number of nonlinear iterations
 kP = 0.233
 kI = 0.133
@@ -25,7 +25,7 @@ maxl = 20
 
 matrix_free_operator = true   # Use the actual nonlinear function for the matrix-vector product
 
-lag_jacobian = 5   # With pid_controller=true the Jacobian will be recalculated every timestep
+lag_jacobian = 5   # With the PID controller the Jacobian will be recalculated every timestep
 timestep = 0.1       # Starting internal timestep
 
 dt_min_reset = 1e-10

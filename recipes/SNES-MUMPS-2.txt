@@ -21,7 +21,7 @@ timestep = 0.1
 max_snes_failures = 20
 scale_vars = true
  
-pid_controller = true
+timestep_control = pid_nonlinear_its
 target_its = 100
 kP = 0.233   # 0.65
 kI = 0.133 # 0.30
