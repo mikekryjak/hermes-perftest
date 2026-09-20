@@ -8,7 +8,7 @@ time a and run to time b. It is named by its plasma time on a 0.1 ms grid,
 e.g. `test2_2.0-3.0ms` is test 2 from 2.0 ms to 3.0 ms.
 
 The restart files for the start time (the seed) come from a seed library at
-<seeds>/<hermes_sha>/<test>/<a>ms/. A missing seed is cut from the parent's
+<seeds>/<hermes_sha>/<parent case>/<a>ms/. A missing seed is cut from the parent's
 dumps with sdtools' make_restart.py.
 
 The new case gets the parent's BOUT.inp, so its physics settings match the
@@ -90,9 +90,9 @@ def seed_time_ms(seed):
     return tt / omega_ci * 1e3
 
 
-def get_seed(parent, seeds, sha, test, start):
-    """Return the seed directory for (test, start), cutting it if missing."""
-    seed = seeds / sha / test / f"{start}ms"
+def get_seed(parent, seeds, sha, start):
+    """Return the parent's seed directory at start, cutting it if missing."""
+    seed = seeds / sha / parent.name / f"{start}ms"
     if not list(seed.glob("BOUT.restart.*.nc")):
         make_restart = shutil.which("make_restart.py")
         if make_restart is None:
@@ -151,7 +151,7 @@ def main():
     ).expanduser().resolve()
 
     sha = hermes_sha(parent)
-    seed, t_ms = get_seed(parent, seeds, sha, test, start)
+    seed, t_ms = get_seed(parent, seeds, sha, start)
 
     case.mkdir(parents=True)
     step = write_input(parent, case, start, end)
