@@ -5,8 +5,6 @@
 [solver]
 diagnose = true
 type = snes
-snes_type = newtonls   # newtontr not as good
-ksp_type = fgmres
 pc_type = lu
 max_nonlinear_iterations = 10
 atol = 1e-3
@@ -27,10 +25,10 @@ kI = 0.133 # 0.30
 kD = 0.0 # 0.15
 
 [petsc]
+options_left            # report any option PETSc never used
+snes_type = newtonls   # newtontr not as good
 log_view
-snes_fd_color_use_mat
 ksp_type = fgmres
-pc_type = lu
 pc_factor_mat_solver_type = mumps
 snes_linesearch_type = basic
 

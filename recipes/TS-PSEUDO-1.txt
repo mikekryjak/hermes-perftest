@@ -16,6 +16,7 @@ interpolate = false
 
 
 [petsc]
+options_left            # report any option PETSc never used
 ts_type = pseudo
 ts_pseudo_monitor = true
 # ts_monitor = true

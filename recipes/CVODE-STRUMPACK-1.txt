@@ -11,6 +11,7 @@ atol = 1e-12 * 1
 rtol = 1e-7 * 1                         
 
 [petsc]
+options_left            # report any option PETSc never used
 cvode_petscpre_ksp_type = preonly
 cvode_petscpre_pc_type = lu
 

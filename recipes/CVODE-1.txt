@@ -1,6 +1,7 @@
 # CVODE-1
 # Standard CVODE settings.
 
+# No [petsc] section: this recipe builds no PETSc object, so options_left has nowhere to go.
 [solver]
 mxstep = 1e9
 cvode_max_order = 3

@@ -5,8 +5,6 @@
 [solver]
 diagnose = true
 type = snes                      # Backward Euler steady-state solver
-snes_type = newtonls             # Nonlinear solver
-ksp_type = gmres                 # Linear solver: gmres, cg
 max_nonlinear_iterations = 16    # default: 50
 pc_type = hypre                  # Preconditioner type
 pc_hypre_type = ilu
@@ -25,6 +23,9 @@ matrix_free_operator = true
 timestep = 0.001                 # Initial timestep
 
 [petsc]
+options_left            # report any option PETSc never used
+snes_type = newtonls             # Nonlinear solver
+ksp_type = gmres                 # Linear solver: gmres, cg
 
 #log_view = true
 
@@ -32,4 +33,3 @@ pc_hypre_ilu_level = 1                            # k = 2  (default is 0, try 1 
 pc_hypre_ilu_local_reordering = true              # reduces fill / improves robustness
 pc_hypre_ilu_tri_solve = true                     # use triangular solve instead of smoothing
 pc_hypre_ilu_print_level = true
-snes_fd_color_use_mat = true

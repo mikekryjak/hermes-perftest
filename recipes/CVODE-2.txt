@@ -1,6 +1,7 @@
 # CVODE-2
 # mxorder=1, tighter rtol. 
 
+# No [petsc] section: this recipe builds no PETSc object, so options_left has nowhere to go.
 [solver]                                # cvode (Beuler not very good in 2D atm)
 type = cvode 				            # Added by Lin 0926
 mxstep = 1e9                            # Max steps (set to max)
