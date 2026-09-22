@@ -53,6 +53,14 @@ def parse_args():
         help="Seed library directory. Default: $SOLVEROPT_SEEDS, else seeds/ "
         "beside the parent run",
     )
+    parser.add_argument(
+        "--nout",
+        type=int,
+        default=NOUT,
+        help=f"Number of outputs across the window (default {NOUT}). A long "
+        "window needs more, or its output interval outgrows a stall limit "
+        "set for the parent's cadence.",
+    )
     return parser.parse_args()
 
 
@@ -111,9 +119,9 @@ def get_seed(parent, seeds, sha, start):
     return seed, t_ms
 
 
-def write_input(parent, case, start, end):
+def write_input(parent, case, start, end, nout=NOUT):
     """Copy the parent's BOUT.inp, setting nout and timestep for the window."""
-    step = (end - start) / NOUT
+    step = (end - start) / nout
     lines = (parent / "BOUT.inp").read_text().splitlines(keepends=True)
     done = set()
     for i, line in enumerate(lines):
@@ -121,7 +129,7 @@ def write_input(parent, case, start, end):
             break  # nout and timestep are top-level options
         key = line.split("=")[0].strip()
         if key == "nout":
-            lines[i] = f"nout = {NOUT}   # window {start}-{end} ms\n"
+            lines[i] = f"nout = {nout}   # window {start}-{end} ms\n"
             done.add(key)
         elif key == "timestep":
             lines[i] = f"timestep = {ONE_MS} * {step}   # {ONE_MS} = 1ms in normalised units\n"
@@ -154,7 +162,7 @@ def main():
     seed, t_ms = get_seed(parent, seeds, sha, start)
 
     case.mkdir(parents=True)
-    step = write_input(parent, case, start, end)
+    step = write_input(parent, case, start, end, args.nout)
     (case / "base").mkdir()
     for f in sorted(seed.glob("BOUT.restart.*.nc")):
         shutil.copy2(f, case / "base" / f.name)
@@ -163,7 +171,7 @@ def main():
     print(f"Created {case.name}")
     print(f"  parent  {parent.name} (Hermes-3 {sha[:12]})")
     print(f"  seed    {seed} at {t_ms:.6g} ms")
-    print(f"  output  nout = {NOUT}, timestep = {ONE_MS} * {step} ({start}-{end} ms)")
+    print(f"  output  nout = {args.nout}, timestep = {ONE_MS} * {step} ({start}-{end} ms)")
     print("  next    apply a recipe, open the row, launch with -restart")
 
 
