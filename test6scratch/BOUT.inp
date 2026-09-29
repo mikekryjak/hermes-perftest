@@ -10,6 +10,8 @@
 #     initial_pd, as test4), so scale_vars does not floor them.
 #   - error_on_unused_options = true.
 #   - grid renamed grid_test6.nc (the same file); run from the repo root.
+#   - removed the stale [mesh] profile-geometry lines (nx = 40, MXG,
+#     xsep_inner, x_index): the grid is 20 cells wide and nothing read them.
 # Everything else is as the source ran it, including its solver block
 # (SNES-MUMPS-1 with target_its = 100). Each ladder row sets its own recipe;
 # see readme.md.
@@ -60,16 +62,6 @@ error_on_unused_options = true
 [mesh]
 
 file = "grid_test6.nc"
-
-# Geometry calculations for profiles
-# This is adapted from https://bout-dev.readthedocs.io/en/latest/user_docs/variable_init.html#id4
-# The index (i) is defined as excluding guards, hence I add "+ MXG" at the enabled
-# Remember to manually change these numbers if you change grid!!!
-
-xsep_inner = 19  # Last cell before separatrix (ixseps - 1)
-nx = 40
-MXG = 2
-x_index = x*(nx - 2 * MXG) - 0.5 + MXG
 
 
 [mesh:paralleltransform]

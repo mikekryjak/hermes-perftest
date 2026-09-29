@@ -24,6 +24,8 @@ from it:
 - `input:error_on_unused_options = true`;
 - the grid is `grid_test6.nc` in the repo root, a copy of
   `g3e4f1-lores_widev2_nonortho_xpoint_allf.nc`.
+- the stale `[mesh]` profile-geometry lines (`nx = 40`, `MXG`, `xsep_inner`,
+  `x_index`) are removed: the grid is 20 cells wide and nothing read them.
 
 The source ran on a separate-limiter worktree build. Some limiter option
 names differ between builds; `error_on_unused_options` names any option a
