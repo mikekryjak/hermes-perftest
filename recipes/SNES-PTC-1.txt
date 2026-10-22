@@ -13,8 +13,6 @@ kP = 0.233
 kI = 0.133
 kD = 0.0
 
-snes_type = newtonls
-ksp_type = fgmres
 pc_type = lu
 max_nonlinear_iterations = 20   # Limit significantly above target_its to limit failures
 atol = 1e-7
@@ -31,7 +29,8 @@ timestep = 0.1       # Starting internal timestep
 dt_min_reset = 1e-10
 
 [petsc]
+options_left            # report any option PETSc never used
+snes_type = newtonls
 ksp_type = fgmres
-pc_type = lu
 pc_factor_mat_solver_type = strumpack
 snes_linesearch_type = basic

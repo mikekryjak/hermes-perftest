@@ -2,9 +2,7 @@
 
 [solver]
 type = snes                     # Backward Euler steady-state solver
-snes_type = newtonls            # Nonlinear solver
 equation_form = rearranged_backward_euler  # rearranged_backward_euler, pseudo_transient, backward_euler, direct_newton
-ksp_type = gmres                # Linear solver: gmres, cg, preonly
 max_nonlinear_iterations = 26   # default: 50
 pc_type = ilu                   # Preconditioner type
 #pc_hypre_type = ilu             # Hypre preconditioner type: euclid, pilut, parasails, boomeramg, ams, ads
@@ -21,7 +19,7 @@ maxl = 2000                      # default: 20
 #matrix_free = true
 #use_coloring = false
 #predictor = false
-#line_search_type = nleqerr      # Line search type: basic, bt, l2, cp, nleqerr
+#snes_linesearch_type = nleqerr  # set in [petsc]: basic, bt, l2, cp, nleqerr
 diagnose = true
 #diagnose_failures = true
 timestep_control = pid_nonlinear_its
@@ -33,6 +31,9 @@ matrix_free_operator = true
 #force_symmetric_coloring = true
 
 [petsc]
+options_left            # report any option PETSc never used
+snes_type = newtonls            # Nonlinear solver
+ksp_type = gmres                # Linear solver: gmres, cg, preonly
 #pc_hypre_ilu_type = Block-Jacobi-ILUk           #
 #pc_hypre_ilu_level = 1          # k = 2  (try 1 and 2)
 #pc_hypre_ilu_local_reordering = true # reduces fill / improves robustness

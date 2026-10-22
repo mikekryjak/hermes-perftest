@@ -9,6 +9,9 @@ tnorm_setting = 1
 initial_ti = 25 / tnorm_setting
 initial_ne = 0.5e18 / hermes:Nnorm    # Nm-3
 initial_pi = initial_ti * initial_ne
+initial_nd = 1e16 / hermes:Nnorm   # 1e16 m^-3; non-zero so scale_vars does not floor it
+initial_td = 3 / tnorm_setting     # 3 eV
+initial_pd = initial_nd * initial_td
 
 [input]
 error_on_unused_options = true
@@ -149,11 +152,13 @@ pfr_fast_refl_fraction = 0.7
 
 
 [Pd]
+function = initial_pd
 bndry_sol = neumann  # This prevents advection of density or energy out of the SOL
 bndry_core = neumann
 bndry_all = neumann
 
 [Nd]
+function = initial_nd
 bndry_sol = neumann
 bndry_core = neumann
 bndry_all = neumann

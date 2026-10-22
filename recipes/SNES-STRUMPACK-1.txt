@@ -4,8 +4,6 @@
 [solver]
 diagnose = true
 type = snes                     # Backward Euler steady-state solver
-snes_type = newtonls            # Nonlinear solver
-ksp_type = preonly              # Linear solver
 use_precon = false
 max_nonlinear_iterations = 15   # default: 50
 pc_type = lu                    # Preconditioner type
@@ -18,5 +16,8 @@ use_coloring = true
 matrix_free_operator = true
 
 [petsc]
+options_left            # report any option PETSc never used
+snes_type = newtonls            # Nonlinear solver
+ksp_type = preonly              # Linear solver
 pc_factor_mat_solver_type = strumpack
 mat_strumpack_verbose = true
