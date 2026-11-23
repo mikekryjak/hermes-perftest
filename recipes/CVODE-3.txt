@@ -1,0 +1,40 @@
+# CVODE-3
+# Right-preconditioned GMRES with a step limit learned from GMRES's convergence.
+# Needs BOUT-dev with cvode_jtimes_sigma_factor and cvode_linear_step_control
+# (boutproject/BOUT-dev PR #3557); SUNDIALS >= 6.2 for the limit's enforcement.
+# Base settings: CVODE-1 with maxl 50, rtol 1e-4 and cvode_precon_method = user.
+#
+# Test 2 from scratch to 18 ms, 10 ranks, same answer as left preconditioning:
+#   neutral-phys-prec campaign Hermes-3 (kappa_limit_smooth = 0.01, 3 runs each):
+#     X2-T+m preconditioner 1.28x faster, PR 687's 1.61x faster.
+#   upstream Hermes-3 master (Nov 2026), PR 687's preconditioner: about 1.5x
+#     faster than left preconditioning to 9 ms, with far fewer failed Newton
+#     solves, but Test 2 can stall there: this recipe stalled after 4.8 ms
+#     (left preconditioning completed 18 ms); with the limiter smoothing
+#     described below added locally, both stalled (this recipe at 9 ms, left
+#     at 14 ms).
+# On short windows (Test 2 steady, W0, W20) failed Newton solves drop sharply,
+# but speed is mixed (-20 % to +13 %).
+#
+# A stall shows as h ~ 1e-3 for many steps. On the campaign branch it was the
+# electron conduction limiter's kink at a flat-Te cell, cured there by
+# [e] kappa_limit_smooth = 0.01 (an option not in upstream Hermes-3).
+# When building Hermes-3 against a BOUT-dev branch, configure with
+# -DHERMES_UPDATE_GIT_SUBMODULE=OFF, or CMake resets BOUT-dev to its pinned commit.
+
+[solver]
+type = cvode
+cvode_precon_method = user          # replaces use_precon = True
+
+mxstep = 1e9
+cvode_max_order = 3
+maxl = 50                           # also the step control's GMRES iteration budget
+atol = 1e-12 * 1
+rtol = 1e-4 * 1
+
+rightprec = true                    # right-preconditioned GMRES: less memory than FGMRES
+# linear_solver = fgmres            # alternative: FGMRES (always right-preconditioned;
+#                                   # ~3 % faster on Test 2, more memory); drop rightprec
+cvode_jtimes_sigma_factor = 0.01    # smaller Jv increment, needed with right preconditioning
+cvode_linear_step_control = true    # step limit learned from GMRES's convergence
+diagnose = false
