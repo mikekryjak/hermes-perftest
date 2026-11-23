@@ -8,5 +8,5 @@ cvode_max_order = 3
 maxl = 5
 atol = 1e-12 * 1
 rtol = 1e-6 * 1
-use_precon = True
+cvode_precon_method = user
 diagnose = false
